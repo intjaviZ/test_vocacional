@@ -1,9 +1,11 @@
 import { useContext, useEffect } from "react";
 import { useState } from "react";
-import InputRegister from "../componentes/InputRegister";
+import InputRegister from "../componentes/inputRegister/InputRegister";
 import { pedirCiudad, pedirEstados, pedirGenero, registrarUsuario } from "../pedidos/fetchRegister";
 import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
+import '../estilos/botones.css'
+import '../estilos/forms.css'
 
 const FormRegister = () => {
     const { user, setUser} = useContext(ContextUser);
@@ -79,89 +81,96 @@ const FormRegister = () => {
     }
 
     return !user.loading ? (
-        <div>
-            <div>
-                {/* imagen */}
-            </div>
-            <form onSubmit={startTest}>
-                <InputRegister>
-                    <input 
-                        required
-                        type="text"
-                        placeholder="nombre"
-                        value={nombre_user}
-                        minLength="3"
-                        maxLength="16"
-                        onChange={(e) => onChangeInput(e,"nombre_user")} />
-                </InputRegister>
-                <InputRegister>
-                    <input
-                        required
-                        type="text"
-                        placeholder="apellido paterno"
-                        value={apellido_paterno}
-                        minLength="3"
-                        maxLength="16"
-                        pattern="\w{3,16}"
-                        onChange={(e) => onChangeInput(e,"apellido_paterno")}/>
-                </InputRegister>
-                <InputRegister>
-                    <input
-                        required
-                        type="text"
-                        placeholder="apellido materno"
-                        value={apellido_materno}
-                        minLength="3"
-                        maxLength="16"
-                        onChange={(e) => onChangeInput(e,"apellido_materno")}
-                    />
-                </InputRegister>
-                <InputRegister>
-                    <input
-                        required
-                        type="email"
-                        placeholder="correo electrónico"
-                        maxLength="50"
-                        value={email}
-                        onChange={(e) => onChangeInput(e,"email")}
-                    />
-                </InputRegister>
-                <InputRegister>
-                    <input
-                        required
-                        type="tel"
-                        placeholder="telefono"
-                        value={telefono}
-                        maxLength="10"
-                        onChange={(e) => onChangeInput(e,"telefono")}
-                    />
-                </InputRegister>
-                <InputRegister>
-                    <select required name="estadosOrigen" id="estadosOrigen" value={id_estado} onChange={(e) => onChangeInput(e,"id_estado")}>
-                    <option>Selecciona un estado</option>
+        <div className="box-ingresar">
+            <form onSubmit={startTest} className="form-ingresar">
+                <div className="box-imagen">
+                    <img src="../../public/person-prueba.webp" alt="user image" />
+                </div>
+                <div className="box-input">
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <input 
+                            required
+                            type="text"
+                            placeholder="nombre"
+                            className='input-register'
+                            value={nombre_user}
+                            minLength="3"
+                            maxLength="16"
+                            onChange={(e) => onChangeInput(e,"nombre_user")} />
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <input
+                            required
+                            type="text"
+                            placeholder="apellido paterno"
+                            className='input-register'
+                            value={apellido_paterno}
+                            minLength="3"
+                            maxLength="16"
+                            pattern="\w{3,16}"
+                            onChange={(e) => onChangeInput(e,"apellido_paterno")}/>
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <input
+                            required
+                            type="text"
+                            placeholder="apellido materno"
+                            className='input-register'
+                            value={apellido_materno}
+                            minLength="3"
+                            maxLength="16"
+                            onChange={(e) => onChangeInput(e,"apellido_materno")}
+                        />
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <input
+                            required
+                            type="email"
+                            placeholder="correo electrónico"
+                            className='input-register'
+                            maxLength="50"
+                            value={email}
+                            onChange={(e) => onChangeInput(e,"email")}
+                        />
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <input
+                            required
+                            type="tel"
+                            placeholder="telefono"
+                            className='input-register'
+                            value={telefono}
+                            maxLength="10"
+                            onChange={(e) => onChangeInput(e,"telefono")}
+                        />
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <select required name="estadosOrigen" className='input-register select' id="estadosOrigen" value={id_estado} onChange={(e) => onChangeInput(e,"id_estado")}>
+                        <option>Selecciona un estado</option>
                         {estados.map((estado) => (
                                 <option key={estado.id_Estado} value={estado.id_Estado}>{estado.Estado}</option>
-                        ))}
-                    </select>
-                </InputRegister>
-                <InputRegister>
-                    <select required name="ciudadOrigen" id="ciudadOrigen" value={id_ciudad} onChange={(e) => onChangeInput(e,"id_ciudad")}>
-                    <option>Selecciona una ciudad</option>
-                        {ciudades.map((ciudad) =>(
-                            <option key={ciudad.id_municipio} value={ciudad.id_municipio}>{ciudad.municipio}</option>
-                        ))}
-                    </select>
-                </InputRegister>
-                <InputRegister>
-                    <select required name="genero" id="genero" value={id_genero} onChange={(e) => onChangeInput(e,"id_genero")}>
-                        <option>Selecciona un genero</option>
-                        {generos.map((genero) => (
-                            <option key={genero.id_genero} value={parseInt(genero.id_genero)}>{genero.genero}</option>
-                        ))}
-                    </select>
-                </InputRegister>
-                <button>Iniciar</button>
+                            ))}
+                        </select>
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <select required name="ciudadOrigen" className='input-register select' id="ciudadOrigen" value={id_ciudad} onChange={(e) => onChangeInput(e,"id_ciudad")}>
+                        <option>Selecciona una ciudad</option>
+                            {ciudades.map((ciudad) =>(
+                                <option key={ciudad.id_municipio} value={ciudad.id_municipio}>{ciudad.municipio}</option>
+                            ))}
+                        </select>
+                    </InputRegister>
+                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                        <select required name="genero" className='input-register select' id="genero" value={id_genero} onChange={(e) => onChangeInput(e,"id_genero")}>
+                            <option>Selecciona un genero</option>
+                            {generos.map((genero) => (
+                                <option key={genero.id_genero} value={parseInt(genero.id_genero)}>{genero.genero}</option>
+                            ))}
+                        </select>
+                    </InputRegister>
+                </div>
             </form>
+            <button className="boton-primario">Empezar</button>
         </div>
      ) : (
         <h1>cargando datos</h1>

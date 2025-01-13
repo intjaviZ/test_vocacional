@@ -38,7 +38,7 @@ const CustomTooltip = ({ active, payload, data }) => {
           <span style={{ textTransform: "capitalize", marginRight: "5px", color: "black"}}>
             {payload[0].name}
           </span>
-          <span style={{color: "black" }}>{payload[0].value}</span>
+          <span style={{color: "black", fontWeight: "bold" }}>{payload[0].value}</span>
         </div>
       </div>
     );
@@ -53,9 +53,12 @@ const CustomLabel = ({ x, y, name }) => (
     y={y}
     
     style={{
+      width: "20px",
       fontSize: "11px",
       fill: "white",
-      textTransform: "capitalize",
+      
+      
+
     }}
   >
     {name}

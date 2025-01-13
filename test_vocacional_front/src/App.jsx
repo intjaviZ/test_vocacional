@@ -5,12 +5,11 @@ import { ContextUser } from './contextos/ContextUser'
 import Layout from './pages/Layout'
 import FormRegister from './pages/FormRegister'
 import Preguntas from './pages/Preguntas'
+import Resultados from './pages/Resultados';
 import NoEncontrado from './pages/NoEncontrado'
 import SinPermiso from './pages/SinPermiso'
 import VistasProtegidas from './pages/VistaProtegida'
 import FormReingresar from './pages/FormReingresar'
-import Resultados from './pages/Resultados'
-
 
 function App() {
   const { user } = useContext(ContextUser);
@@ -30,6 +29,9 @@ function App() {
         </Route>
         <Route path='*' element={<NoEncontrado/>}/>
       </Routes>
+      {/* <FormRegister/> */}
+      {/* <Preguntas/> */}
+      {/* <Resultados/> */}
     </>
   );
 }

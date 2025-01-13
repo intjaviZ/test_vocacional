@@ -1,0 +1,18 @@
+.box-pregunta {
+    @apply flex-col bg-primary min-h-8 h-auto max-h-60 min-w-12 w-card-mv max-w-full my-4 ml-0 py-3 pl-2 pr-9 rounded-r-full text-sm overflow-hidden;
+}
+.pregunta{
+    @apply text-secondary line-clamp-3 pt-3 pb-4;
+}
+.box-incisos {
+    @apply flex-col
+}
+.box-opcion {
+    @apply text-black border border-cobre rounded-3xl m-2 pl-4 p-1 w-44 flex items-center box-border cursor-pointer hover:text-primary hover:bg-secondary hover:border-none transition duration-100 ease-in
+}
+.box-opcion.seleccionado {
+    @apply text-primary bg-secondary border-none
+}
+.input-radio {
+    @apply opacity-0 absolute 
+}

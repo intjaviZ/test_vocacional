@@ -1,0 +1,15 @@
+.box-ingresar {
+    @apply h-full w-full flex flex-col items-center pb-4;
+}
+.form-ingresar {
+    @apply  h-auto bg-primary mb-6 pt-3 px-2 pb-32 rounded-b-full flex flex-col items-center justify-center;
+}
+.form-reingresar {
+    @apply  h-input-re w-44 bg-primary pb-24 mb-4 rounded-b-full flex flex-col items-center justify-end;
+}
+.box-imagen {
+    @apply mb-1 min-h-20 h-28 max-h-36 min-w-20 w-28 max-w-36;
+}
+.box-botones {
+    @apply w-full px-3 flex justify-between items-center;
+}

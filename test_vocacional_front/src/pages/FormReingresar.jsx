@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import InputRegister from "../componentes/InputRegister";
+import InputRegister from "../componentes/inputRegister/InputRegister";
 import { obtenerUsuario } from "../pedidos/fetchRegister";
 import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
+import '../estilos/botones.css'
+import '../estilos/forms.css'
 
 const FormReingresar = () => {
 
@@ -39,10 +41,15 @@ const FormReingresar = () => {
     }
 
     return (
-        <form>
-            <InputRegister>
+        <div className="box-ingresar">
+            <form className="form-reingresar">
+            <div className="box-imagen">
+                <img src="../../public/person-prueba.webp" alt="user image" />
+            </div>
+            <InputRegister srcImagen="../../public/person-prueba.webp">
                 <input
                     required
+                    className="input-register"
                     type="email"
                     placeholder="correo electrónico"
                     value={email}
@@ -50,9 +57,12 @@ const FormReingresar = () => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
             </InputRegister>
-            <button onClick={startTest}>ingresar</button>
-            <button onClick={verResultados}>Resultados anteriores</button>
         </form>
+        <div className="box-botones">
+            <button className="boton-primario" onClick={startTest}>ingresar</button>
+            <button className="boton-primario" onClick={verResultados}>Resultados anteriores</button>
+        </div>
+        </div>
      );
 }
  

@@ -4,8 +4,8 @@ import { ContextUser } from "../contextos/ContextUser";
 import { useNavigate, useParams } from "react-router-dom";
 import { obtenerUsuario } from "../pedidos/fetchRegister";
 import { pedirDatosGrafica, pedirResultados } from "../pedidos/fetchPreguntas";
-import Grafica from "../componentes/Grafica";
-import Cargando from "../componentes/cargando";
+import Grafica from "../componentes/grafica/Grafica";
+// import Cargando from "../componentes/cargando/cargando";
 
 const sinResultados = () => {
     return (

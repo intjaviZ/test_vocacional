@@ -1,10 +1,11 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import CardPregunta from "../componentes/CardPregunta";
+import CardPregunta from "../componentes/cardPregunta/CardPregunta";
 import { pedirIncisos, pedirPreguntas, subirRespuestas } from "../pedidos/fetchPreguntas";
 import { ContextUser } from "../contextos/ContextUser";
 import { ContextRespuestas } from "../contextos/ContextTest";
 import { ContextResultados } from "../contextos/ContextResultados";
 import { useNavigate } from "react-router-dom";
+import '../estilos/botones.css'
 
 const Preguntas = () => {
     const { user }                      = useContext(ContextUser);
@@ -32,6 +33,10 @@ const Preguntas = () => {
     // useEffect(() => console.log(radiosSelected),[radiosSelected])
 
     const grupoPreguntas = preguntas.slice( grupoActual * tamanioGrupo, (grupoActual + 1) * tamanioGrupo );
+    useEffect(() => {
+        
+        console.log(radiosSelected);
+    },[radiosSelected]);
     
     // Funciones para cambiar de grupo
     const siguienteGrupo = () => { 
@@ -123,12 +128,12 @@ const Preguntas = () => {
                     sumarArea={sumarArea}/>
                     
             ))}
-            {esUltimoGrupo && (<button ref={buttonRef}>Click Me</button>)}
+            {esUltimoGrupo && (<button className="boton-primario" ref={buttonRef}>Click Me</button>)}
             </form>
         </div>
         <div>
-            <button onClick={anteriorGrupo} disabled={grupoActual === 0}>Anterior</button>
-            <button onClick={siguienteGrupo} disabled={(grupoActual + 1) * tamanioGrupo >= preguntas.length}>Siguiente</button>
+            <button className="boton-primario" onClick={anteriorGrupo} disabled={grupoActual === 0}>Anterior</button>
+            <button className="boton-primario" onClick={siguienteGrupo} disabled={(grupoActual + 1) * tamanioGrupo >= preguntas.length}>Siguiente</button>
         </div>
         </>
      );

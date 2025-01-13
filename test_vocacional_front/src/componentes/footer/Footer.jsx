@@ -1,9 +1,11 @@
+import '../footer/footer.css';
+
 const Footer = () => {
     return ( 
-        <footer>
+        <footer id="footer">
             <div>
                 <div></div>
-                <a href="www.universidaddelsur.edu.mx">www.universidaddelsur.edu.mx</a>
+                <a href="https://universidaddelsur.edu.mx/" target="_blank" rel="noopener noreferrer">www.universidaddelsur.edu.mx</a>
             </div>
             <div>
                 <div></div>
