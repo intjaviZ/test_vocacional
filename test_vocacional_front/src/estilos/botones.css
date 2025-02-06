@@ -1,3 +1,26 @@
 .boton-primario {
-    @apply bg-opacity-0 text-primary min-w-28 max-w-44 border-2 border-cobre rounded-3xl p-2 text-center font-semibold box-border hover:bg-cobre hover:border-none transition duration-300 ease-in
+    @apply bg-opacity-0 m-4 text-primary min-w-28 border-2 border-cobre rounded-3xl p-2
+    text-center font-semibold box-border 
+    md:cursor-pointer transition duration-300 ease-in md:enabled:hover:bg-cobre md:enabled:hover:border-transparent
+    2xl:w-64 2xl:h-16 2xl:text-xl;
+}
+.boton-primario:disabled {
+    @apply  cursor-not-allowed opacity-50;
+}
+
+.burguer-boton {
+    @apply text-white w-6 h-6 lg:w-9 lg:h-9 2xl:w-16 2xl:h-16;
+}
+.burguer-boton:disabled {
+    @apply  cursor-not-allowed opacity-50;
+}
+
+.box-botones {
+    @apply w-full px-8 md:px-20 pt-4 pb-6 flex flex-col sm:flex-row justify-end 
+    sm:justify-between items-center sm:items-end flex-grow
+    2xl:items-center 2xl:my-24;
+}
+.box-boton { 
+    @apply h-32 w-full pt-4 pb-6 flex items-end justify-center flex-grow
+    2xl:my-24;
 }

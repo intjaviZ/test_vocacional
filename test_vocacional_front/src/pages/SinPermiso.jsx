@@ -1,13 +1,22 @@
-import { Link } from "react-router-dom";
-
 const SinPermiso = () => {
-    return ( 
-        <div>
-            <h1>Oooh, no te has registrado, hazlo en este momento para acceder al test</h1>
-            <Link to={'/registrar'}>Registrarme</Link>
-            <Link to={'/reingresar'}>Usar mi mismo correo</Link>
-        </div>
-    );
-}
- 
+  const text = "vaya!!!, no has registrado un usuario, hazlo en este momento para acceder a tu test : )";
+  const words = text.split(" ");
+
+  return (
+    <div className=" w-full pt-20 flex-grow flex items-start justify-center px-10 lg:px-24 2xl:px-64">
+      <h1 className="font-light text-2xl xl:text-4xl 2xl:text-6xl uppercase text-justify">
+        {words.map((word, id) => (
+          <span
+            key={id}
+            className="inline-block opacity-0 animate-fadeIn transition-opacity duration-500"
+            style={{ animationDelay: `${id * 300}ms` }}
+          >
+            {word}&nbsp;
+          </span>
+        ))}
+      </h1>
+    </div>
+  );
+};
+
 export default SinPermiso;

@@ -9,7 +9,7 @@ export const ContextResultadosProvider = ({ children }) => {
     const fetchModelResultados = async () => { return await pedirResultadosModelJson() }
 
     useEffect(() => { fetchModelResultados().then((data) => setResultados(data)) },[]);
-    // useEffect(() => console.log(resultados),[resultados]);
+    
     return (
         <ContextResultados.Provider value={{ resultados, setResultados }}>
             {children}

@@ -2,11 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+
 body {
-  @apply bg-purple-900 text-primary;
+  @apply min-w-80 h-screen  m-0 p-0 bg-purple-800 text-primary overflow-x-hidden;
 }
+/* html { @apply overflow-hidden} */
 #root {
-  @apply flex flex-col h-screen w-screen;
+  @apply h-full flex flex-col;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-primary;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-secondary;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-cobre;
 }
 /*******
 :root {

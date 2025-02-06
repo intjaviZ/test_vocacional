@@ -4,11 +4,10 @@ import InputRegister from "../componentes/inputRegister/InputRegister";
 import { pedirCiudad, pedirEstados, pedirGenero, registrarUsuario } from "../pedidos/fetchRegister";
 import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
-import '../estilos/botones.css'
-import '../estilos/forms.css'
+import Cargando from "../componentes/cargando/Cargando";
 
 const FormRegister = () => {
-    const { user, setUser} = useContext(ContextUser);
+    const {user, setUser} = useContext(ContextUser);
     
     const [estados, setEstados] = useState([]);
     const [ciudades, setCiudades] = useState([]);
@@ -82,25 +81,27 @@ const FormRegister = () => {
 
     return !user.loading ? (
         <div className="box-ingresar">
-            <form onSubmit={startTest} className="form-ingresar">
+            <form onSubmit={startTest} className="form-ingresar" autoComplete="off">
                 <div className="box-imagen">
-                    <img src="../../public/person-prueba.webp" alt="user image" />
+                    <img src="/person-prueba.webp" alt="user image" />
                 </div>
                 <div className="box-input">
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <input 
                             required
+                            id="input-nombre"
                             type="text"
                             placeholder="nombre"
                             className='input-register'
                             value={nombre_user}
                             minLength="3"
-                            maxLength="16"
+                            maxLength="25"
                             onChange={(e) => onChangeInput(e,"nombre_user")} />
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <input
                             required
+                            id="input-aPaterno"
                             type="text"
                             placeholder="apellido paterno"
                             className='input-register'
@@ -110,9 +111,10 @@ const FormRegister = () => {
                             pattern="\w{3,16}"
                             onChange={(e) => onChangeInput(e,"apellido_paterno")}/>
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <input
                             required
+                            id="input-aMaterno"
                             type="text"
                             placeholder="apellido materno"
                             className='input-register'
@@ -122,9 +124,10 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e,"apellido_materno")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <input
                             required
+                            id="input-email"
                             type="email"
                             placeholder="correo electrónico"
                             className='input-register'
@@ -133,9 +136,10 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e,"email")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <input
                             required
+                            id="input-tel"
                             type="tel"
                             placeholder="telefono"
                             className='input-register'
@@ -144,7 +148,7 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e,"telefono")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <select required name="estadosOrigen" className='input-register select' id="estadosOrigen" value={id_estado} onChange={(e) => onChangeInput(e,"id_estado")}>
                         <option>Selecciona un estado</option>
                         {estados.map((estado) => (
@@ -152,7 +156,7 @@ const FormRegister = () => {
                             ))}
                         </select>
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <select required name="ciudadOrigen" className='input-register select' id="ciudadOrigen" value={id_ciudad} onChange={(e) => onChangeInput(e,"id_ciudad")}>
                         <option>Selecciona una ciudad</option>
                             {ciudades.map((ciudad) =>(
@@ -160,7 +164,7 @@ const FormRegister = () => {
                             ))}
                         </select>
                     </InputRegister>
-                    <InputRegister srcImagen="../../public/person-prueba.webp">
+                    <InputRegister srcImagen="/person-prueba.webp">
                         <select required name="genero" className='input-register select' id="genero" value={id_genero} onChange={(e) => onChangeInput(e,"id_genero")}>
                             <option>Selecciona un genero</option>
                             {generos.map((genero) => (
@@ -170,10 +174,12 @@ const FormRegister = () => {
                     </InputRegister>
                 </div>
             </form>
-            <button className="boton-primario">Empezar</button>
+            <div className="box-boton">
+                <button className="boton-primario">Empezar</button>
+            </div>
         </div>
      ) : (
-        <h1>cargando datos</h1>
+        <Cargando/>
      );
 }
  

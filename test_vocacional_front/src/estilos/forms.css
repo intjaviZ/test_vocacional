@@ -1,15 +1,37 @@
 .box-ingresar {
-    @apply h-full w-full flex flex-col items-center pb-4;
+    @apply h-full w-full flex flex-col items-center;
 }
+
+/* @media (min-width: 550px) {
+    .form-ingresar {
+        @apply w-form-in-sm;
+    }
+} */
+
 .form-ingresar {
-    @apply  h-auto bg-primary mb-6 pt-3 px-2 pb-32 rounded-b-full flex flex-col items-center justify-center;
+    @apply min-w-32 w-form-in-mn max-w-form-mv lg:max-w-form-pc h-auto bg-primary pt-4 2xl:pt-16
+    px-2 flex flex-col rounded-b-full pb-32 2xl:pb-56 items-center
+    sm:w-form-in-sm md:w-form-in-md lg:w-form-in-lg 2xl:w-form-in-xl;
 }
+.form-ingresar .box:last-child { @apply sm:mb-4; }
+
 .form-reingresar {
-    @apply  h-input-re w-44 bg-primary pb-24 mb-4 rounded-b-full flex flex-col items-center justify-end;
+    @apply min-w-32 w-form-in-mn max-w-form-mv lg:max-w-form-pc bg-primary
+    px-4 pt-top-relativo 2xl:pt-64 pb-32 lg:pb-72 rounded-b-full 
+    flex flex-col items-center justify-start
+    sm:w-form-in-sm md:w-form-in-md lg:w-form-in-lg 2xl:w-form-in-xl;
 }
+/* .form-reingresar .box:last-child { @apply mb-8 md:mb-16 } */
+
 .box-imagen {
-    @apply mb-1 min-h-20 h-28 max-h-36 min-w-20 w-28 max-w-36;
+    @apply mb-1 2xl:mb-8 min-h-20 h-28 max-h-48 min-w-20 w-28 max-w-48
+    2xl:w-48 2xl:h-48;
 }
-.box-botones {
-    @apply w-full px-3 flex justify-between items-center;
+#box-re-imagen {
+    @apply mb-8;
 }
+.box-input {
+    @apply w-full h-auto flex-grow px-3 pb-3 flex flex-col items-center justify-center;
+}
+
+/* formulario preguntas */

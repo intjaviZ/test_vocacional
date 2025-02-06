@@ -1,13 +1,18 @@
 .box {
-    @apply flex items-center max-h-10 p-1 m-1 w-full;
+    @apply w-full max-w-xl min-h-5 h-9 lg:h-12 2xl:h-16 max-h-16 m-1
+    flex items-center justify-start;
 }
 .box-image {
-    @apply bg-primary min-h-8 h-9 min-w-8 w-9 rounded-full flex items-center justify-start z-10;
+    @apply  min-h-5 h-9 lg:h-12 2xl:h-16 min-w-5 w-9 lg:w-12 2xl:w-16
+    bg-primary rounded-full flex items-center justify-center z-10;
 }
 .image {
-    @apply max-h-8 max-w-8 rounded-full;
+    @apply h-5/6 w-5/6 rounded-full;
 }
 
 .input-register {
-    @apply bg-secondary min-h-7 h-8 max-h-9 min-w-36 w-48 max-w-56 rounded-e-full -ml-3 pl-3.5 text-primary text-sm truncate appearance-none focus:outline-none placeholder:text-primary hover:opacity-80 transition duration-100 ease-out;
+    @apply bg-secondary min-h-5 h-8 lg:h-11 2xl:h-14 max-h-16 min-w-20 w-full max-w-full 
+    rounded-e-full -ml-3 pl-4 lg:-ml-4 lg:pl-5 pr-1 lg:pr-2 2xl:-ml-6 2xl:pl-8
+    text-primary text-sm md:text-base 2xl:text-2xl truncate appearance-none flex-grow 
+    focus:outline-none placeholder:text-primary hover:opacity-80 transition duration-100 ease-out;
 }

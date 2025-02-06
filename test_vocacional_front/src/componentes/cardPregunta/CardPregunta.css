@@ -1,18 +1,22 @@
 .box-pregunta {
-    @apply flex-col bg-primary min-h-8 h-auto max-h-60 min-w-12 w-card-mv max-w-full my-4 ml-0 py-3 pl-2 pr-9 rounded-r-full text-sm overflow-hidden;
+    @apply bg-primary min-h-8 h-auto max-h-72 min-w-72 w-card-mv max-w-cp
+    mb-4 md:mb-7 ml-0 py-4 md:py-7 pl-left-cp pr-9 rounded-r-full overflow-hidden
+    md:w-card-tb lg:w-card-es md:pl-left-cp-es;
 }
 .pregunta{
-    @apply text-secondary line-clamp-3 pt-3 pb-4;
+    @apply text-secondary line-clamp-3 pb-2 pr-5 md:pr-9 text-sm md:text-base  2xl:text-2xl;
 }
 .box-incisos {
-    @apply flex-col
+    @apply flex-col;
 }
 .box-opcion {
-    @apply text-black border border-cobre rounded-3xl m-2 pl-4 p-1 w-44 flex items-center box-border cursor-pointer hover:text-primary hover:bg-secondary hover:border-none transition duration-100 ease-in
+    @apply text-black text-xs  2xl:text-xl border border-cobre rounded-3xl m-2 ml-0 pl-4 py-1 min-w-28 w-44 flex items-center box-border 
+    md:cursor-pointer transition duration-200 ease-in  md:hover:text-primary md:hover:bg-secondary md:hover:border-transparent;
 }
+
 .box-opcion.seleccionado {
-    @apply text-primary bg-secondary border-none
+    @apply text-primary bg-secondary border-transparent transition duration-100 ease-in  scale-105 shadow-md shadow-secondary;
 }
 .input-radio {
-    @apply opacity-0 absolute 
+    @apply opacity-0 absolute;
 }

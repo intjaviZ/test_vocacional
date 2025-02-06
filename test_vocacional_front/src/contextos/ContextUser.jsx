@@ -9,7 +9,7 @@ export const ContextUserProvider = ({ children }) => {
     const fetchModelUser = async () => { return await pedirUserModelJson() }
 
     useEffect(() => { fetchModelUser().then((data) => setUser(data)) },[]);
-    // useEffect(() => console.log(user),[user]);
+    
     return (
         <ContextUser.Provider value={{user, setUser}}>
             {children}

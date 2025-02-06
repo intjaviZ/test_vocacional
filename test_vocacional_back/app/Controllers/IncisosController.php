@@ -10,7 +10,7 @@ class IncisosController extends ResourceController
     public function index()
     {
         $incisosModel = new IncisosModel();
-        $incisos = $incisosModel->select('id_inciso, inciso, valor_inciso')->findAll();;
+        $incisos = $incisosModel->getIncisos();
 
         return $this->respond($incisos);
     }

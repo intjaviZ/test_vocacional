@@ -12,4 +12,14 @@ class IncisosModel extends Model
     
     protected $allowedFields = [ 'inciso', 'valor_inciso' ];
 
+    public function getIncisos()
+    {
+        $incisos = $this->select('id_inciso, inciso, valor_inciso')->findAll();
+
+        foreach ($incisos as &$inciso) {
+            $inciso['valor_inciso'] = intval($inciso['valor_inciso']);
+        }
+
+        return $incisos;
+    }
 }

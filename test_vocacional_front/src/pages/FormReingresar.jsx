@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import InputRegister from "../componentes/inputRegister/InputRegister";
 import { obtenerUsuario } from "../pedidos/fetchRegister";
 import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
-import '../estilos/botones.css'
-import '../estilos/forms.css'
+import Cargando from "../componentes/cargando/Cargando";
 
 const FormReingresar = () => {
 
@@ -40,30 +39,31 @@ const FormReingresar = () => {
         if (emailValido) navegar(`/resultados/${email}`)
     }
 
-    return (
+    return !user.loading ? (
         <div className="box-ingresar">
-            <form className="form-reingresar">
-            <div className="box-imagen">
-                <img src="../../public/person-prueba.webp" alt="user image" />
+            <form onSubmit={startTest} id="form-reingresar" className="form-reingresar" autoComplete="off">
+                <div className="box-imagen" id="box-re-imagen">
+                    <img src="/person-prueba.webp" alt="user image" />
+                </div>
+                <InputRegister srcImagen="/person-prueba.webp">
+                    <input
+                        required
+                        id="input-reingresar"
+                        className="input-register"
+                        type="email"
+                        placeholder="correo electrónico"
+                        value={email}
+                        maxLength="50"
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </InputRegister>
+            </form>
+            <div className="box-botones">
+                <button className="boton-primario" onClick={verResultados}>Resultados anteriores</button>
+                <button className="boton-primario" form="form-reingresar">ingresar</button>
             </div>
-            <InputRegister srcImagen="../../public/person-prueba.webp">
-                <input
-                    required
-                    className="input-register"
-                    type="email"
-                    placeholder="correo electrónico"
-                    value={email}
-                    maxLength="50"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </InputRegister>
-        </form>
-        <div className="box-botones">
-            <button className="boton-primario" onClick={startTest}>ingresar</button>
-            <button className="boton-primario" onClick={verResultados}>Resultados anteriores</button>
         </div>
-        </div>
-     );
+     ) : ( <Cargando/> );
 }
  
 export default FormReingresar;

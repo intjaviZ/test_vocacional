@@ -5,11 +5,11 @@ const Footer = () => {
         <footer id="footer">
             <div>
                 <div></div>
-                <a href="https://universidaddelsur.edu.mx/" target="_blank" rel="noopener noreferrer">www.universidaddelsur.edu.mx</a>
+                <a className='links' href="https://universidaddelsur.edu.mx/" target="_blank" rel="noopener noreferrer">www.universidaddelsur.edu.mx</a>
             </div>
             <div>
                 <div></div>
-                <p>800 283 3432</p>
+                <p className='links'>800 283 3432</p>
             </div>
         </footer>
      );

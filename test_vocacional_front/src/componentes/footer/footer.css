@@ -1,3 +1,7 @@
 #footer {
-    @apply max-h-20 bg-primary text-secondary p-4;
+    @apply min-w-full p-5 flex flex-col items-start justify-center bg-primary text-secondary
+    md:h-36 2xl:h-44 2xl:text-2xl;
+}
+.links {
+    @apply text-wrap;
 }

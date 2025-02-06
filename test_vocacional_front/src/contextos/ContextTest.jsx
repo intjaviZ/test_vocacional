@@ -1,16 +1,24 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { pedirRespuestasModelJson } from "../pedidos/fetchModels";
 
 export const ContextRespuestas = createContext();
 
 export const ContextRespuestasProvider = ({ children }) => {
-    let [respuestas, setRespuestas] = useState([]);
+    let respuestas = useRef({});
 
     const fetchModelRespuestas = async () => { return await pedirRespuestasModelJson() }
+    useEffect(() => { fetchModelRespuestas().then((data) => respuestas.current = data) },[]);
 
-    useEffect(() => { fetchModelRespuestas().then((data) => setRespuestas(data)) },[]);
+    const updateArea = (area, valorPrevio, valorNuevo) => {
+        respuestas.current = { 
+            ...respuestas.current, 
+            [area]: (respuestas.current[area] || 0) - valorPrevio + valorNuevo 
+        };
+        console.log("respuestas",respuestas.current)
+    }
+
     return (
-        <ContextRespuestas.Provider value={{respuestas, setRespuestas}}>
+        <ContextRespuestas.Provider value={{respuestas, updateArea}}>
             {children}
         </ContextRespuestas.Provider>
      );
