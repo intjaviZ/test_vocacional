@@ -35,7 +35,7 @@ export const registrarUsuario = async (dataUsuario) => {
 
 export const obtenerUsuario = async (email) => {
     try {
-        if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ 
+        if (!email.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.email)){ 
             const response = {
                 "messages":{
                     "error": "ingresa un email valido"
@@ -44,7 +44,13 @@ export const obtenerUsuario = async (email) => {
             return response;
         }
 
-        const pedido = await fetch(`http://localhost:8080/testvc/pedirUser/${email}`);
+        const pedido = await fetch('http://localhost:8080/testvc/pedirUser', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(email)
+        });
         const response = await pedido.json();
         return response;
     } catch (error) {

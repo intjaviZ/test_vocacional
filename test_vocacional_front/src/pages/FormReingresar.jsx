@@ -8,12 +8,12 @@ import Cargando from "../componentes/cargando/Cargando";
 const FormReingresar = () => {
 
     const { user, setUser} = useContext(ContextUser);
-    const [email, setEmail] = useState("");
+    const [emailState, setEmail] = useState({ "email": '' });
 
     const navegar = useNavigate();
 
-    const getUser = async () => {
-        const response = await obtenerUsuario(email);
+    const getUser = async (user_email) => {
+        const response = await obtenerUsuario(user_email);
         if (response.hasOwnProperty('id_user')) {
             setUser((prevUser) => ({
                 ...prevUser,
@@ -27,16 +27,16 @@ const FormReingresar = () => {
     }
     const startTest = async (e) => {
         e.preventDefault();
-        const emailValido = await getUser();
+        const emailValido = await getUser(emailState);
 
         if (emailValido) navegar('/test')
     }
 
     const verResultados = async (e) => {
         e.preventDefault();
-        const emailValido = await getUser();
+        const emailValido = await getUser(emailState);
 
-        if (emailValido) navegar(`/resultados/${email}`)
+        if (emailValido) navegar('/resultados')
     }
 
     return !user.loading ? (
@@ -52,15 +52,15 @@ const FormReingresar = () => {
                         className="input-register"
                         type="email"
                         placeholder="correo electrónico"
-                        value={email}
+                        value={emailState.email}
                         maxLength="50"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setEmail({ email: e.target.value })}
                     />
                 </InputRegister>
             </form>
             <div className="box-botones">
                 <button className="boton-primario" onClick={verResultados}>Resultados anteriores</button>
-                <button className="boton-primario" form="form-reingresar">ingresar</button>
+                <button className="boton-primario" form="form-reingresar">Iniciar test</button>
             </div>
         </div>
      ) : ( <Cargando/> );

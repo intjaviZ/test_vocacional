@@ -55,10 +55,17 @@ class UserController extends ResourceController
         ], 200);
     }
 
-    public function show($email = null)
+    public function getUser()
     {
+        $requestData = $this->request->getJSON();
+
+        // Verifica si se proporcionó el email
+        if (!isset($requestData->email)) {
+            return $this->failValidationErrors('Ingresa un email');
+        }
+
         // Busca el usuario por email
-        $user = $this->model->where('email', $email)->first();
+        $user = $this->model->where('email', $requestData->email)->first();
 
         // Si no se encuentra, devuelve un error 404
         if (!$user) {
@@ -69,4 +76,5 @@ class UserController extends ResourceController
 
         return $this->respond($filteredUser);
     }
+    
 }

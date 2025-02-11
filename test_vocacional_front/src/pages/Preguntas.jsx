@@ -31,15 +31,8 @@ const Preguntas = () => {
         fetchPreguntas().then((data) => setPreguntas(data))
         fetchIncisos().then((data) => {
             setIncisos(data);
-        })
-        console.log("pedí");
-        
+        })        
     }, []);
-
-    useEffect(() => {
-        console.log("yo");
-        
-    });
 
     const grupoPreguntas = useMemo(() => {
         return preguntas.slice(grupoActual * tamanioGrupo, (grupoActual + 1) * tamanioGrupo);
@@ -80,7 +73,6 @@ const Preguntas = () => {
         //     return { ...estado, [area]: estado[area] - valorPrevio + valor };
         // });
         radiosSelected.current[id_pregunta] = valor;
-        console.log("radios: ", radiosSelected.current);
     }, [radiosSelected]);
 
     const validarRespuestas = () => {
@@ -147,7 +139,7 @@ const Preguntas = () => {
                                     pregunta={pregunta.pregunta}
                                     incisos={incisos}
                                     sumarArea={sumarArea}
-                                    selectedInciso={radiosSelected.current[pregunta.id_pregunta] || null} />
+                                    selectedInciso={radiosSelected.current[pregunta.id_pregunta] ?? null} />
                             ))}
                         </div>
                     </form>

@@ -8,8 +8,8 @@ const SinPermiso = () => {
         {words.map((word, id) => (
           <span
             key={id}
-            className="inline-block opacity-0 animate-fadeIn transition-opacity duration-500"
-            style={{ animationDelay: `${id * 300}ms` }}
+            className="inline-block opacity-0 animate-fadeIn transition-opacity duration-200"
+            style={{ animationDelay: `${id * 150}ms` }}
           >
             {word}&nbsp;
           </span>

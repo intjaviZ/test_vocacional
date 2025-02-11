@@ -14,7 +14,6 @@ export const ContextRespuestasProvider = ({ children }) => {
             ...respuestas.current, 
             [area]: (respuestas.current[area] || 0) - valorPrevio + valorNuevo 
         };
-        console.log("respuestas",respuestas.current)
     }
 
     return (

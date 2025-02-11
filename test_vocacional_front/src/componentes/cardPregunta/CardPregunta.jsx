@@ -6,16 +6,12 @@ const CardPregunta = memo(({ pregunta, id_pregunta, id_area, incisos, sumarArea,
     const handleSelect = (e) => {
         const valor = parseInt(e.target.value, 10);
         sumarArea(id_area, id_pregunta, valor);
-
         setOpcion(valor);
     }
 
     useEffect(() => {
         setOpcion(selectedInciso);
-        console.log("paso", selectedInciso);
-        
     }, [selectedInciso]);
-    
     
     return (
         <div className='box-pregunta'>
@@ -23,10 +19,10 @@ const CardPregunta = memo(({ pregunta, id_pregunta, id_area, incisos, sumarArea,
             <div className='box-incisos'>
                 {incisos.map((inciso) => (
                     <label 
-                        htmlFor={inciso.id_inciso+id_pregunta}
+                        htmlFor={`${inciso.id_inciso}-${id_pregunta}`}
                         className={`box-opcion grupo${id_pregunta}
                         ${opcion === inciso.valor_inciso ? 'seleccionado' : ''}`}
-                        key={inciso.id_inciso+id_pregunta}
+                        key={`${inciso.id_inciso}-${id_pregunta}`}
                     >
                         {inciso.inciso}
                         <input
@@ -34,7 +30,7 @@ const CardPregunta = memo(({ pregunta, id_pregunta, id_area, incisos, sumarArea,
                         required
                         type="radio"
                         name={id_pregunta+id_area}
-                        id={inciso.id_inciso+id_pregunta}
+                        id={`${inciso.id_inciso}-${id_pregunta}`}
                         value={inciso.valor_inciso}
                         onChange={handleSelect} />    
                     </label>

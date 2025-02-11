@@ -26,7 +26,7 @@ function App() {
           
           <Route path='/registrar' element={<FormRegister/>}/>
           <Route path='/reingresar' element={<FormReingresar/>}/>
-          <Route path='/resultados/:email' element={<Resultados/>}/>
+          <Route path='/resultados' element={<Resultados/>}/>
           <Route element={<VistasProtegidas permissions={user.permissions}/>}>
             <Route path='/test' element={<Preguntas/>}/>
             <Route path='/resultados' element={<Resultados/>}/>

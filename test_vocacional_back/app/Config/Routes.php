@@ -19,12 +19,12 @@ $routes->group('testvc', ['filter' => 'cors'], static function (RouteCollection 
     $routes->get('modelRespuestas', 'RespuestasController::index');
     $routes->get('modelResultados', 'RespuestasController::obtenerEstructura');
     
-    $routes->get('pedirUser/(:segment)', 'UserController::show/$1');
-    $routes->get('pedirResultados/(:segment)', 'RespuestasController::show/$1');
+    
+    $routes->get('pedirResultados/(:num)', 'RespuestasController::show/$1');
     $routes->get('pedirGrafica/(:num)', 'GraficaController::index/$1');
     $routes->get('piechart/(:num)', 'EmailController::index/$1');
 
-    
+    $routes->post('pedirUser', 'UserController::getUser');
     $routes->post('crearUser', 'UserController::create');
     $routes->post('subirResultados/(:num)', 'RespuestasController::create/$1');
 

@@ -1,5 +1,5 @@
 .nav {
-    @apply min-w-full bg-opacity-0 text-white z-20 md:h-20 2xl:h-44;
+    @apply top-0 min-w-full bg-opacity-0 text-white z-20 md:h-20 2xl:h-44;
 }
 
 .nav-container {

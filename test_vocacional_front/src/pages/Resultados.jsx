@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ContextResultados } from "../contextos/ContextResultados";
 import { ContextUser } from "../contextos/ContextUser";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { obtenerUsuario } from "../pedidos/fetchRegister";
 import { pedirDatosGrafica, pedirResultados } from "../pedidos/fetchPreguntas";
 import Grafica from "../componentes/grafica/Grafica";
@@ -19,8 +19,15 @@ const Resultados = () => {
     const { resultados, setResultados } = useContext(ContextResultados);
     const { user, setUser } = useContext(ContextUser);
     const [grafica, setGrafica] = useState(null);
-    const { email } = useParams();
     const navegar = useNavigate();
+
+    useEffect(() => {
+        if (user.loading)  return null;
+
+        if (user.permissions) {
+            
+        }
+    },[user])
 
     const verificarUser = async () => {
         if (user.id_user) return null;
@@ -34,6 +41,13 @@ const Resultados = () => {
             return null;
         }
     }
+
+    useEffect(() => {
+        if(user.loading) return;
+        else if (!user.id_user) {
+            verificarUser();
+        }
+    },[user]);
 
     const verificarResultados = async () => {
         // if (resultados.id_user) return null;

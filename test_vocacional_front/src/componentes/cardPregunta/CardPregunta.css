@@ -1,6 +1,7 @@
 .box-pregunta {
     @apply bg-primary min-h-8 h-auto max-h-72 min-w-72 w-card-mv max-w-cp
-    mb-4 md:mb-7 ml-0 py-4 md:py-7 pl-left-cp pr-9 rounded-r-full overflow-hidden
+    mb-4 md:mb-7 lg:mb-12 ml-0 py-4 md:py-7 pl-left-cp pr-9 rounded-r-full overflow-hidden 
+    shadow-[4px_0_6px_rgba(0,0,0,0.4)]
     md:w-card-tb lg:w-card-es md:pl-left-cp-es;
 }
 .pregunta{
@@ -10,12 +11,15 @@
     @apply flex-col;
 }
 .box-opcion {
-    @apply text-black text-xs  2xl:text-xl border border-cobre rounded-3xl m-2 ml-0 pl-4 py-1 min-w-28 w-44 flex items-center box-border 
-    md:cursor-pointer transition duration-200 ease-in  md:hover:text-primary md:hover:bg-secondary md:hover:border-transparent;
+    @apply text-black text-xs  2xl:text-xl
+    border border-cobre rounded-3xl m-2 ml-0 pl-4 py-1 min-w-28 w-44 flex items-center box-border 
+    md:cursor-pointer transition duration-200 ease-in
+    md:hover:text-primary md:hover:bg-secondary md:hover:border-transparent;
 }
 
 .box-opcion.seleccionado {
-    @apply text-primary bg-secondary border-transparent transition duration-100 ease-in  scale-105 shadow-md shadow-secondary;
+    @apply text-primary bg-secondary border-transparent
+    transition duration-100 ease-in  scale-105 shadow-md shadow-secondary;
 }
 .input-radio {
     @apply opacity-0 absolute;
