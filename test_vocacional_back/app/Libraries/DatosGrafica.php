@@ -4,7 +4,8 @@ namespace App\Libraries;
 
 use Config\Services;
 
-class DatosGrafica {
+class DatosGrafica
+{
     protected DataBaseConnect $databaseConnect;
     protected $db;
 
@@ -13,105 +14,162 @@ class DatosGrafica {
         $this->databaseConnect = Services::databaseConnect();
         $this->db = $this->databaseConnect->getConnection();
     }
+    private function usuarioValido(int $id_user): bool
+    {
+        if (empty($id_user)) return false;
+        if (!is_numeric($id_user) || (int)$id_user != $id_user) return false;
+        if ($id_user <= 0) return false;
 
-    public function pedirDatos(int $id_user): array
+        return true;
+    }
+
+    public function usuario(int $id_user): array
     {
         try {
-            $queryJoinRespuestas = $this->pedirjoinsRespuestas($id_user);
-            $queryCarreras = $this->pedirCarreras($id_user);
-
-            $resultadosArray = json_decode($queryJoinRespuestas['resultados'], true);
-            $claves = array_keys($resultadosArray);
-            $valores = array_values($resultadosArray);
-            $queryAreas = $this->pedirAreas($claves);
-
-
+            if (!$this->usuarioValido($id_user)) {
+                throw new \Exception("El usuario no es valido.");
+            }
+            $datosUsuario = $this->datosUsuario($id_user);
             $response = [
-                'nombre' => $queryJoinRespuestas['nombre_user'],
-                'email' => $queryJoinRespuestas['email'],
-                'evaluacion' => $queryJoinRespuestas['evaluacion'],
-                'area' => $queryJoinRespuestas['area'],
-                'carreras' => $queryCarreras['carreras'],
-                'data' => $valores,
-                'labels' => $queryAreas
+                'id_user'    => $datosUsuario['id_user'],
+                'nombre'     => $datosUsuario['nombre'],
+                'evaluacion' => $datosUsuario['evaluacion'],
+                'area'       => $datosUsuario['area']
             ];
             return $response;
         } catch (\Throwable $th) {
-            return [
-                'error'   =>  $th->getMessage(),
-                'status'  => '400',
-                'message' => 'Error al obtener los datos. Intente más tarde.',
-            ];
+            throw new \Exception($th->getMessage());
         }
     }
-
-    private function pedirjoinsRespuestas(int $id_user): array
+    public function grafica(int $id_user): array
     {
         try {
-            $queryJoinRespuestas = $this->db->table('test_respuestas')
-                ->select('test_user.nombre_user, test_user.email, test_evaluacion.evaluacion, test_areas.nombre_area, test_respuestas.resultados')
-                ->join('test_user', 'test_user.id_user = test_respuestas.id_user')
-                ->join('test_evaluacion', 'test_evaluacion.id_evaluacion = test_respuestas.id_evaluacion')
-                ->join('test_areas', 'test_areas.id_area = test_respuestas.id_area')
-                ->where('test_respuestas.id_user', $id_user)->orderBy('test_respuestas.fecha', 'DESC')->limit(1)
-                ->get()->getResult();
-
-            if (empty($queryJoinRespuestas)) {
-                throw new \Exception("No se encontraron resultados para el usuario.");
+            if (!$this->usuarioValido($id_user)) {
+                throw new \Exception("El usuario no es valido.");
             }
-            return [
-                'nombre_user' => $queryJoinRespuestas[0]->nombre_user,
-                'email'       => $queryJoinRespuestas[0]->email,
-                'evaluacion'  => $queryJoinRespuestas[0]->evaluacion,
-                'area'        => $queryJoinRespuestas[0]->nombre_area,
-                'resultados'  => $queryJoinRespuestas[0]->resultados
+            $datosGrafica = $this->datosGrafica($id_user);
+            $response = [
+                'data'   => $datosGrafica['data'],
+                'labels' => $datosGrafica['labels']
             ];
+            return $response;
         } catch (\Throwable $th) {
-            throw $th;
+            throw new \Exception($th->getMessage());
         }
     }
-    private function pedirCarreras(int $id_user): array
+    public function correo(int $id_user): array
     {
         try {
-            $subqueryFecha = $this->db->table('test_respuestas')
-                ->selectMax('fecha')
-                ->where('id_user', $id_user)
-                ->getCompiledSelect();
-
-            $queryCarreras = $this->db->table('test_respuestas')
-                ->select('test_carreras.nombre_carrera')
-                ->join('test_carreras', 'test_carreras.id_area = test_respuestas.id_area')
-                ->where('test_respuestas.id_user', $id_user)
-                ->where("test_respuestas.fecha = ($subqueryFecha)", null, false)
-                ->get()->getResultArray();
-
-            if (empty($queryCarreras)) {
-                throw new \Exception("No se encontraron resultados para el usuario.");
+            if (!$this->usuarioValido($id_user)) {
+                throw new \Exception("El usuario no es valido.");
             }
-            return [
-                'carreras' => array_column($queryCarreras, 'nombre_carrera')
+            $datosUsuario = $this->datosUsuario($id_user);
+            $carreras = $this->pedirCarreras($id_user);
+            $email = $this->pedirEmail($id_user);
+            $response = [
+                'id_user'    => $datosUsuario['id_user'],
+                'email'      => $email,
+                'nombre'     => $datosUsuario['nombre'],
+                'evaluacion' => $datosUsuario['evaluacion'],
+                'area'       => $datosUsuario['area'],
+                'carreras'   => $carreras
             ];
+            return $response;
         } catch (\Throwable $th) {
-            throw $th;
+            throw new \Exception($th->getMessage());
         }
     }
+    private function datosUsuario(int $id_user): array
+    {
+        $usuario = $this->db->table('test_respuestas')
+            ->select('test_user.id_user, test_user.nombre_user, test_evaluacion.evaluacion, test_areas.nombre_area')
+            ->join('test_user', 'test_user.id_user = test_respuestas.id_user')
+            ->join('test_evaluacion', 'test_evaluacion.id_evaluacion = test_respuestas.id_evaluacion')
+            ->join('test_areas', 'test_areas.id_area = test_respuestas.id_area')
+            ->where('test_respuestas.id_user', $id_user)->where('test_respuestas.id_status', 3)
+            ->orderBy('test_respuestas.fecha', 'DESC')->limit(1)
+            ->get()->getRow();
+
+        if (empty($usuario)) {
+            throw new \Exception("No se encontraron resultados para el usuario.");
+        }
+        return [
+            'id_user'    => intval($usuario->id_user),
+            'nombre'     => $usuario->nombre_user,
+            'evaluacion' => $usuario->evaluacion,
+            'area'       => $usuario->nombre_area
+        ];
+    }
+
+    private function datosGrafica(int $id_user): array
+    {
+        $resultados = $this->pedirResultados($id_user);
+        $claves = array_keys($resultados);
+        $data = array_values($resultados);
+        $labels = $this->pedirAreas($claves);
+        return [
+            'data'   => $data,
+            'labels' => $labels
+        ];
+    }
+
+    private function pedirResultados(int $id_user): array
+    {
+        $resultado = $this->db->table('test_respuestas')->select('resultados')
+            ->where('id_user', $id_user)->where('id_status', 3)
+            ->orderBy('fecha', 'DESC')->limit(1)->get()->getRow();
+
+        if (!$resultado) {
+            throw new \Exception("No se encontraron resultados para el usuario.");
+        }
+
+        $arrayResultados = json_decode($resultado->resultados, true);
+        return $arrayResultados;
+    }
+
     private function pedirAreas(array $claves): array
     {
-        try {
-            $nombre_areas = $this->db->table('test_areas')->select('nombre_area')
-                ->whereIn('id_area', $claves)
-                ->get()->getResult();
-            $areas = array_map(function ($area) {
-                return $area->nombre_area;  // Accede a la propiedad 'nombre_area' de cada objeto
-            }, $nombre_areas);
+        $nombre_areas = $this->db->table('test_areas')->select('nombre_area')
+            ->whereIn('id_area', $claves)
+            ->get()->getResult();
 
-            if (empty($areas)) {
-                throw new \Exception("No se encontraron resultados para el usuario.");
-            }
+        $areas = array_map(function ($area) {
+            return $area->nombre_area;
+        }, $nombre_areas);
 
-            return $areas;
-        } catch (\Throwable $th) {
-            throw $th;
+        if (empty($areas)) {
+            throw new \Exception("No se encontraron resultados para el usuario.");
         }
+        return $areas;
+    }
+
+    private function pedirCarreras(int $id_user): array
+    {
+        $id_area = $this->db->table('test_respuestas')->select('id_area')
+            ->where('id_user', $id_user)->where('id_status', 3)
+            ->orderBy('fecha', 'DESC')->limit(1)
+            ->get()->getRow()->id_area;
+
+        $carreas = $this->db->table('test_carreras')->select('nombre_carrera')
+            ->where('id_area', $id_area)->where('id_status', 1)->get();
+
+        $nombre_carreras = array_column($carreas->getResultArray(), 'nombre_carrera');
+
+        if (empty($nombre_carreras)) {
+            throw new \Exception("No se encontraron resultados para el usuario.");
+        }
+        return $nombre_carreras;
+    }
+
+    private function pedirEmail(int $id_user): string
+    {
+        $result = $this->db->table('test_user')->select('email')
+            ->where('id_user', $id_user)->where('id_status', 1)->where('test_completado', 3)
+            ->orderBy('fecha', 'DESC')->limit(1)->get()->getRow();
+
+        if (!$result || !$result->email) {
+            throw new \Exception("No encontramos el correo del usuario.");
+        }
+        return $result->email;
     }
 }

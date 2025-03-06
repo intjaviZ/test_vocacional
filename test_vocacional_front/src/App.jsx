@@ -12,7 +12,7 @@ const FormRegister = lazy(() => import('./pages/FormRegister'))
 const Preguntas = lazy(() => import('./pages/Preguntas'))
 const Resultados = lazy(() => import('./pages/Resultados'))
 const NoEncontrado = lazy(() => import('./pages/NoEncontrado'))
-const SinPermiso = lazy(() => import('./pages/SinPermiso'))
+const ErrorPage = lazy(() => import('./pages/ErrorPage'))
 const FormReingresar = lazy(() => import('./pages/FormReingresar'))
 
 function App() {
@@ -21,12 +21,11 @@ function App() {
     <Suspense fallback={<Cargando/>}>
       <Routes>
         <Route path='/' element={<Layout/>}>
-          <Route path='/public' element={<SinPermiso/>}/>
+          <Route path='/public' element={<ErrorPage
+            mensaje="vaya!!!, no has registrado un usuario, hazlo en este momento para acceder a tu test : )"/>}/>
           <Route index element={<FormRegister/>}/>
-          
           <Route path='/registrar' element={<FormRegister/>}/>
           <Route path='/reingresar' element={<FormReingresar/>}/>
-          <Route path='/resultados' element={<Resultados/>}/>
           <Route element={<VistasProtegidas permissions={user.permissions}/>}>
             <Route path='/test' element={<Preguntas/>}/>
             <Route path='/resultados' element={<Resultados/>}/>

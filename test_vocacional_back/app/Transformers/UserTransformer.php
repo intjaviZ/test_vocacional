@@ -1,21 +1,24 @@
 <?php
 namespace App\Transformers;
+use CodeIgniter\Model;
 
 class UserTransformer
 {
-    public static function transform(array $user): array
+    public static function datosUsuario(Model $model, array $data): array
     {
-        return [
-            'id_user'          => $user['id_user'],
-            'nombre_user'      => $user['nombre_user'],
-            'apellido_paterno' => $user['apellido_paterno'],
-            'apellido_materno' => $user['apellido_materno'],
-            'email'            => $user['email'],
-            'telefono'         => $user['telefono'],
-            'id_estado'        => $user['id_estado'],
-            'id_ciudad'        => $user['id_ciudad'],
-            'id_genero'        => $user['id_genero'],
-            'permissions'      => true,
-        ];
+        $allowedFields = $model->allowedFields;
+
+        $filtered = [];
+        $filtered['id_user'] = $data['id_user'];
+
+        foreach ($allowedFields as $field) {
+            if (array_key_exists($field, $data)) {
+                $filtered[$field] = $data[$field];
+            }
+        }
+
+        $filtered['permissions'] = true;
+
+        return $filtered;
     }
 }

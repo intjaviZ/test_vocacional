@@ -6,17 +6,15 @@ use CodeIgniter\RESTful\ResourceController;
 
 class MunicipiosController extends ResourceController 
 {
-    public function index($id_estado = null)
+    public function show($id_estado = null)
     {
         $municipiosModel = new MunicipiosModel();
-
-        if ($id_estado) {
-            $municipios = $municipiosModel->select('id_municipio, municipio')
-            ->where('id_estado', $id_estado)
-            ->findAll();
-            return $this->respond($municipios);
+        if (!$id_estado || $id_estado > 32) {
+            return $this->failNotFound('estado invalido');
         }
-        // Retornamos los resultados como una respuesta JSON
-        return $this->failNotFound('id_estado es requerido');
+
+        $municipios = $municipiosModel->select('id_municipio, municipio')
+        ->where('id_estado', $id_estado)->where('visible', 1)->findAll();
+        return $this->respond($municipios);
     }
 }

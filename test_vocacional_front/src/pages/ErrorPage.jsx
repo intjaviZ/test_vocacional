@@ -1,6 +1,5 @@
-const SinPermiso = () => {
-  const text = "vaya!!!, no has registrado un usuario, hazlo en este momento para acceder a tu test : )";
-  const words = text.split(" ");
+const ErrorPage = ({ mensaje }) => {
+  const words = mensaje.split(" ");
 
   return (
     <div className=" w-full pt-20 flex-grow flex items-start justify-center px-10 lg:px-24 2xl:px-64">
@@ -19,4 +18,4 @@ const SinPermiso = () => {
   );
 };
 
-export default SinPermiso;
+export default ErrorPage;

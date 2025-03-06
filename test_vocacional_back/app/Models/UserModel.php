@@ -20,7 +20,9 @@ class UserModel extends Model
         'telefono',
         'id_estado',
         'id_ciudad',
-        'id_genero'];
+        'id_genero',
+        'test_completado'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -32,7 +34,7 @@ class UserModel extends Model
         'email'            => 'required|valid_email|max_length[50]|is_unique[test_user.email]',
         'telefono'         => 'required|numeric|exact_length[10]',
         'id_estado'        => 'required|numeric',
-        'id_ciudad'        => 'required|numeric', 
+        'id_ciudad'        => 'required|numeric',
         'id_genero'        => 'required|numeric'
     ];
 
@@ -59,7 +61,7 @@ class UserModel extends Model
             'required'   => 'El correo electrónico es obligatorio.',
             'valid_email' => 'El correo electrónico debe ser válido.',
             'max_length' => 'El correo electrónico no puede exceder los {param} caracteres.',
-            'is_unique'  => 'El correo electrónico ya está registrado en el sistema.'
+            'is_unique'  => 'Este correo ya fue usado antes.'
         ],
         'telefono' => [
             'required'   => 'El número de teléfono es obligatorio.',
@@ -92,6 +94,6 @@ class UserModel extends Model
      */
     public function exists(?int $idUser): bool
     {
-        return $this->where('id_user', $idUser)->countAllResults() > 0;
+        return $this->where('id_user', $idUser)->where('id_status', 1)->countAllResults() > 0;
     }
 }

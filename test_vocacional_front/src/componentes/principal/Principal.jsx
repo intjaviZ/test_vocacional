@@ -1,6 +1,6 @@
 const Principal = ({ children }) => {
     return ( 
-        <main className="flex-grow flex flex-col items-center">
+        <main id="main" className="flex-grow flex flex-col items-center">
             {children}
         </main>
      );

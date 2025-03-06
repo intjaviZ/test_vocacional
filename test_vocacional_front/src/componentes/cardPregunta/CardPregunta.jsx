@@ -27,7 +27,6 @@ const CardPregunta = memo(({ pregunta, id_pregunta, id_area, incisos, sumarArea,
                         {inciso.inciso}
                         <input
                         className='input-radio'
-                        required
                         type="radio"
                         name={id_pregunta+id_area}
                         id={`${inciso.id_inciso}-${id_pregunta}`}

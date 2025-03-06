@@ -1,74 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" style="height: 100%;">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Vocacional</title>
-    <style>
-        html,body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-        }
-        table {
-            width: 50%;
-            margin: auto; /* Centro horizontal automático */
-            padding: 15px;
-            border-collapse: collapse;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            table-layout: fixed;
-            
-        }
-        #boxLogotipo {
-            width: 15%;
-            text-align: center;
-        }
-        
-    </style>
 </head>
-<body>
-    <table>
+
+<body style="height: 100%; width: 600px; margin: auto; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+    <table style="height: 90%; width: 600px; margin: auto; border-collapse: collapse; background-color: #fff; border: 1px solid #ddd; margin-top: 10px;">
         <tr>
-                <td id="boxLogotipo">
-                    <img style="width: 100%; margin-left: 10px; margin-top: 20px;" src="https://universidadesdemexico.mx/logos/original/logo-universidad-del-sur.webp" alt="logotipo unisur">
-                </td>
-                <td style="width: 85%; padding-left: 10px;">
-                    <h1 style="text-align: right; margin-right: 15px; margin-top: 20px;">
-                        Gracias {{nombre}}, has completado tu test vocacional con UniSur
-                    </h1>
-                </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <h2 style="text-align: center; margin: 5%;">Aquí están tus resultados {{nombre}}.</h2>
+            <td style="width: 20%; text-align: center; padding: 20px;">
+                <img src="https://universidadesdemexico.mx/logos/original/logo-universidad-del-sur.webp" alt="Logotipo UniSur" style="width: 100%;">
+            </td>
+            <td style="width: 80%; text-align: right; padding: 20px;">
+                <h1 style="margin: 0; font-size: 1.5em; color: #333;">Gracias {{nombre}}, has completado tu test vocacional con UniSur</h1>
             </td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: center;">
-                <h2 style="margin-left: 5%;">Tu área de mayor interés es:</h2>
-                <h2 style="margin-left: 5%; font-size: 48px;">{{area}}</h2>
+            <td colspan="2" style="padding: 20px; text-align: center;">
+                <h3 style="margin: 0; font-size: 1.2em; color: #333;">Tu área de mayor interés es:</h3>
+                <h2 style="margin: 0; font-size: 2.5em; color: #007bff;">{{area}}</h2>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <h3 style="margin-left: 5%;">Según nuestro analisis tienen un {{interes}}</h3>
+            <td colspan="2" style="padding: 20px;">
+                <p style="margin: 0; font-size: 1em; color: #333;">Según nuestro análisis, tienes un interés del {{interes}}.</p>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <ul style="margin-left: 5%;">
+            <td colspan="2" style="padding: 20px; text-align: center;">
+                <img src="{{urlImagen}}" alt="Grafica de resultados" style="display: block; margin: 0 auto;">
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="2" style="padding: 20px;">
+                <ul style="margin: 0; padding-left: 20px; font-size: 1em; color: #333;">
                     {{carreras}}
                 </ul>
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <a style="text-align: center;" href="{{resultados}}">Quiero ver mis resultados completos</a>
+            <td colspan="2" style="padding: 20px; text-align: center;">
+                <a href="{{resultados}}" style="display: inline-block; padding: 10px 20px; font-size: 1em; color: #fff; background-color: #007bff; text-decoration: none; border-radius: 5px;">Quiero ver mis resultados completos</a>
             </td>
         </tr>
     </table>
+    <footer style="margin-top: 20px; text-align: center; font-size: 0.8em; color: #888;">
+        <p>Universidad del Sur | Todos los derechos reservados</p>
+    </footer>
 </body>
+
 </html>

@@ -1,18 +1,23 @@
+// to do
+// añadir los modales en los bloques catch
+
+import { ModalError } from "../componentes/Modal/Modales";
+
 export const pedirIncisos = async () => {
-    const response = await fetch('http://localhost:8080/testvc/pedirIncisos');
+    const response = await fetch('https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/incisos');
     const incisos = await response.json();
     return incisos;
 }
 
 export const pedirPreguntas = async () => {
-    const response = await fetch('http://localhost:8080/testvc/pedirPreguntas');
+    const response = await fetch('https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/preguntas');
     const preguntas = await response.json();
     return preguntas;
 }
 
 export const subirRespuestas = async (id_user, respuestas) => {
     try {
-        const response = await fetch(`http://localhost:8080/testvc/subirResultados/${id_user}`, {
+        const response = await fetch(`https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/subirResultados/${id_user}`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -22,25 +27,19 @@ export const subirRespuestas = async (id_user, respuestas) => {
         const resultados = await response.json();
         return resultados;   
     } catch (error) {
-        console.error("Error en la solicitud:", error);
-    }
-}
-
-export const pedirResultados = async (id_user) => {
-    try {
-        const response = await fetch(`http://localhost:8080/testvc/pedirResultados/${id_user}`);
-        const resultados = await response.json();
-        return resultados;   
-    } catch (error) {
-        console.error("Error en la solicitud:", error);
+        ModalError("Vaya!!!","No logramos guardar tus resultados");
     }
 }
 
 export const pedirDatosGrafica = async (id_user) => {
     try {
-        const response = await fetch(`http://localhost:8080/testvc/pedirGrafica/${id_user}`);
-        return response.json();
+        const response = await fetch(`https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/grafica/${id_user}`);
+        const resultados = await response.json();
+        return {
+            status: response.status,
+            resultados
+        };
     } catch (error) {
-        console.error("Error en la solicitud:", error);
+        ModalError("Vaya!!!","No hemos podido obtener tus resultados");
     }
 }

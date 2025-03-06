@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true, // Permite conexiones externas
-    port: 5173, // Cambia el puerto si es necesario
+    host: '0.0.0.0',  // 👈 Esto es clave para ngrok (y acceso externo en general)
+    port: 5173,        // Puerto donde corre Vite
   }
 })

@@ -1,116 +1,81 @@
 import { useContext, useEffect, useState } from "react";
-import { ContextResultados } from "../contextos/ContextResultados";
 import { ContextUser } from "../contextos/ContextUser";
-import { useNavigate } from "react-router-dom";
-import { obtenerUsuario } from "../pedidos/fetchRegister";
-import { pedirDatosGrafica, pedirResultados } from "../pedidos/fetchPreguntas";
+import { pedirDatosGrafica } from "../pedidos/fetchPreguntas";
 import Grafica from "../componentes/grafica/Grafica";
 import Cargando from "../componentes/cargando/Cargando";
-
-const sinResultados = () => {
-    return (
-        <div>
-            <h1>Ocurrió un problema y no tenemos resultados para mostrar</h1>
-        </div>
-    );
-}
+import { ModalError, ModalExito, ModalWarning } from "../componentes/Modal/Modales";
+import ErrorPage from "./ErrorPage";
+import { enviarEmail } from "../pedidos/fetchRegister";
 
 const Resultados = () => {
-    const { resultados, setResultados } = useContext(ContextResultados);
-    const { user, setUser } = useContext(ContextUser);
+
+    const { user } = useContext(ContextUser);
+    const [evaluacion , setEvaluacion] = useState({
+        nombre: "",
+        evaluacion: "",
+        area: "",
+    });
     const [grafica, setGrafica] = useState(null);
-    const navegar = useNavigate();
+    const [error, setError] = useState(false);
 
-    useEffect(() => {
-        if (user.loading)  return null;
+    const pedirGrafica = async (id) => {
+        const { status, resultados } = await pedirDatosGrafica(id);
+        if (status != 200 || resultados.usuario.id_user !== id) {
+            ModalError('Error',"No logramos obtener tus resultados");
+            setError(true);
+        } 
 
-        if (user.permissions) {
+        const datos = resultados.datos;
+        const usuario = resultados.usuario;
+        const { nombre, evaluacion, area } = usuario;
+        setEvaluacion({ nombre, evaluacion, area });
             
-        }
-    },[user])
-
-    const verificarUser = async () => {
-        if (user.id_user) return null;
-        if (email) {
-            const response = await obtenerUsuario(email);
-            if (response.hasOwnProperty('id_user')) { return response }
-            else {
-                navegar('/reingresar')
-            }
-        } else {
-            return null;
+        if (datos.labels.length === datos.data.length) {
+            const nuevosDatos = datos.labels.map((label, index) => ({
+                name: label,
+                value: datos.data[index],
+            }));
+            setGrafica(nuevosDatos);
         }
     }
 
     useEffect(() => {
-        if(user.loading) return;
-        else if (!user.id_user) {
-            verificarUser();
+        if (user.permissions) {
+            const id_user = parseInt(user.id_user);
+            pedirGrafica(id_user);
         }
     },[user]);
 
-    const verificarResultados = async () => {
-        // if (resultados.id_user) return null;
-        if (resultados?.id_user) return null;
-
-        const response = await pedirResultados(user.id_user);
-        if (response.hasOwnProperty('id_user')) { return response }
-        else { return sinResultados() }
+    const finalizar = async () => {
+        const email = await enviarEmail(user.id_user);
+        if (email.enviado) {
+            return ModalExito("Listo","Puedes revisar tu bandeja de Correo y ver tus resultados");
+        }
+        return ModalWarning("Vaya!!!","No pudimo enviar a tus resultados al correo, pero puedes verlos por aquí");
     }
 
-    useEffect(() => {
-        if (user.loading) return;
-        const pedirDatos = async () => {
-            const userData = await verificarUser();
-            if (userData) {
-                setUser((prevUser) => ({
-                    ...prevUser,
-                    ...userData,
-                }));
-            }
-            const resultadosData = await verificarResultados();
-            if (resultadosData && resultadosData.id_user) {
-                setResultados((resultados) => ({
-                    ...resultados,
-                    ...resultadosData,
-                }));
-            }
-        }
-        pedirDatos();
-    }, [user]);
-
-    useEffect(() => {
-        const pedirGrafica = async () => {
-            if (user.id_user) {
-                const graficaData = await pedirDatosGrafica(user.id_user);
-                if (graficaData.labels.length === graficaData.data.length) {
-                    const nuevosDatos = graficaData.labels.map((label, index) => ({
-                        name: label,
-                        value: graficaData.data[index],
-                    }));
-                    setGrafica(nuevosDatos);
-                }
-            }
-        }
-        pedirGrafica();
-    }, [user.id_user]);
-
-    return (
+    return ( !error ?
         <>
-            <div className=" px-6 pb-3 pt-7">
-                <h1 className=" font-light text-center text-xl md:text-2xl lg:text-3xl 2xl:text-6xl">
+            <div className="px-6 pb-3 pt-7">
+                <h1 className="font-light text-center text-xl md:text-2xl lg:text-3xl 2xl:text-6xl">
                     Felicidades, has terminado tu test vocacional.
-                    Tu área destacada es: {resultados.area}</h1>
-                <h2 className="pt-4 font-light text-center text-lg md:text-xl 2xl:text-5xl">Concluimos que tienes un {resultados.evaluacion}</h2>
+                    Tu área destacada es: <span className=" font-bold">{evaluacion.area}</span></h1>
+                <h2 className="pt-4 font-light text-center text-lg md:text-xl 2xl:text-5xl">
+                Concluimos que tienes un {evaluacion.evaluacion}</h2>
             </div>
-            <div className=" flex-grow flex items-center justify-center w-full">
-                <div className="min-w-grafica w-full min-h-52 h-52 sm:h-grafica-sm md:h-grafica-md xl:h-grafica-xl 2xl:h-grafica-2xl">
+            <div className="flex-grow flex items-center justify-center w-full">
+                <div 
+                className="min-w-grafica w-full min-h-52 h-52 sm:h-grafica-sm md:h-grafica-md 
+                xl:h-grafica-xl 2xl:h-grafica-2xl">
                     {grafica != null ? (
                         <Grafica datos={grafica} />
                     ): (<Cargando/>)}
                 </div>
             </div>
-        </>
+            <div className=" w-full flex justify-center items-start pb-6">
+                <button className="boton-primario" onClick={finalizar}>Finalizar</button>
+            </div>
+        </> : <ErrorPage mensaje="Ocurrió un problema y no tenemos resultados para mostrar :("/>
     );
 
 }

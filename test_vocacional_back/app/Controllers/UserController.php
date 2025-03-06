@@ -12,67 +12,52 @@ class UserController extends ResourceController
     
     public function index()
     {
-        $userModelJson = [
-            'id_user'          => null,
-            'nombre_user'      => '',
-            'apellido_paterno' => '',
-            'apellido_materno' => '',
-            'email'            => '',
-            'telefono'         => '',
-            'id_estado'        => 0,
-            'id_ciudad'        => 0,
-            'id_genero'        => 0,
-            'permissions'      => false,
-        ];
-        return $this->respond($userModelJson,200);
+        $defaults['id_user'] = null;
+        foreach ($this->model->allowedFields as $field) {
+            switch ($field) {
+                case 'id_estado':
+                case 'id_ciudad':
+                case 'id_genero':
+                case 'test_completado':
+                    $defaults[$field] = 0;
+                    break;
+                default:
+                    $defaults[$field] = '';
+                    break;
+            }
+        } //campos del modelo
+        $defaults['permissions'] = false;
+        return $this->respond($defaults);
     }
 
     public function create()
     {
         $dataUser = $this->request->getJSON(true);
 
-        if (!is_array($dataUser)) {
-            return $this->failValidationErrors('Datos inválidos.');
-        }
+        if (!is_array($dataUser)) return $this->failValidationErrors('Datos inválidos.');
 
         if (!$this->model->insert($dataUser)) {
-
-            $errors = $this->model->errors();
-
-            if (isset($errors['email']) &&  $errors['email'] === 'El correo electrónico ya está registrado en el sistema.') {
-                return $this->respond([
-                    'mensaje' => 'Tu usuario ya ha sido creado antes',
-                    'permissions' => false
-                ], 400);
-            }
-            return $this->failValidationErrors($errors);
+            $errores = $this->model->errors();
+            return $this->failValidationErrors($errores);
         }
+
         return $this->respond([
             'id_user' => $this->model->getInsertID(),
-            'mensaje' => 'Tu usuario ha sido creado',
+            'mensaje' => 'Listo para comenzar',
             'permissions' => true,
-            'status' => 200
-        ], 200);
+            'status' => 201
+        ], 201);
     }
 
-    public function getUser()
+    public function obtenerUsuario()
     {
         $requestData = $this->request->getJSON();
+        if (!isset($requestData->email)) return $this->failValidationErrors('Ingresa un email');
 
-        // Verifica si se proporcionó el email
-        if (!isset($requestData->email)) {
-            return $this->failValidationErrors('Ingresa un email');
-        }
-
-        // Busca el usuario por email
         $user = $this->model->where('email', $requestData->email)->first();
+        if (!$user) return $this->failNotFound('No encontramos un usuario con este email.');
 
-        // Si no se encuentra, devuelve un error 404
-        if (!$user) {
-            return $this->failNotFound('No encontramos un usuario con este email.');
-        }
-
-        $filteredUser = UserTransformer::transform($user);
+        $filteredUser = UserTransformer::datosUsuario($this->model,$user);
 
         return $this->respond($filteredUser);
     }

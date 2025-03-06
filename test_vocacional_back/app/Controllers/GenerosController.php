@@ -10,7 +10,7 @@ class GenerosController extends ResourceController
     {
         $generosModel = new GenerosModel();
 
-        $generos = $generosModel->select('id_genero, genero')->findAll();
+        $generos = $generosModel->select('id_genero, genero')->where('id_status', 1)->findAll();
 
         return $this->respond($generos);
     }

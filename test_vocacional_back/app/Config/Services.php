@@ -4,8 +4,8 @@ namespace Config;
 
 use App\Libraries\DataBaseConnect;
 use App\Libraries\DatosGrafica;
+use App\Libraries\GenerarImagen;
 use CodeIgniter\Config\BaseService;
-
 
 /**
  * Services Configuration file.
@@ -33,18 +33,25 @@ class Services extends BaseService
      * }
      */
 
-    public static function databaseConnect(bool $conectado = true): DataBaseConnect
+    public static function databaseConnect(bool $conectado = true) : DataBaseConnect
     {
         if ($conectado) {
             return static::getSharedInstance('databaseConnect');
         }
         return new DataBaseConnect();
     }
-    public static function datosGrafica(bool $getShared = true): DatosGrafica
+    public static function datosGrafica(bool $getShared = true) : DatosGrafica
     {
         if ($getShared) {
             return static::getSharedInstance('datosGrafica');
         }
         return new DatosGrafica();
+    }
+    public static function generarImagen(bool $generar = true) : GenerarImagen
+    {
+        if ($generar) {
+            return static::getSharedInstance('generarImagen');
+        }
+        return new GenerarImagen();
     }
 }

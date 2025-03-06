@@ -9,24 +9,23 @@ use CodeIgniter\Router\RouteCollection;
 $routes->group('testvc', ['filter' => 'cors'], static function (RouteCollection $routes): void {
     
     $routes->get('/', 'Home::index');
-    $routes->get('pedirEstados', 'EstadosController::index');
-    $routes->get('pedirGeneros', 'GenerosController::index');
-    $routes->get('pedirCiudades/(:num)', 'MunicipiosController::index/$1');
-    $routes->get('pedirPreguntas', 'PreguntasController::index');
-    $routes->get('pedirIncisos', 'IncisosController::index');
 
-    $routes->get('modelUser', 'UserController::index');
-    $routes->get('modelRespuestas', 'RespuestasController::index');
-    $routes->get('modelResultados', 'RespuestasController::obtenerEstructura');
-    
-    
-    $routes->get('pedirResultados/(:num)', 'RespuestasController::show/$1');
-    $routes->get('pedirGrafica/(:num)', 'GraficaController::index/$1');
-    $routes->get('piechart/(:num)', 'EmailController::index/$1');
+    $routes->resource('estados', ['controller' => 'EstadosController']);
+    $routes->resource('generos', ['controller' => 'GenerosController']);
+    $routes->resource('municipios', ['controller' => 'MunicipiosController']);
+    $routes->resource('preguntas', ['controller' => 'PreguntasController']);
+    $routes->resource('incisos', ['controller' => 'IncisosController']);
 
-    $routes->post('pedirUser', 'UserController::getUser');
-    $routes->post('crearUser', 'UserController::create');
+    $routes->resource('usuario', ['controller' => 'UserController']);
+    $routes->post('pedirUsuario', 'UserController::obtenerUsuario');
+
+    $routes->resource('respuestas', ['controller' => 'RespuestasController']);
     $routes->post('subirResultados/(:num)', 'RespuestasController::create/$1');
+    
+    $routes->resource('grafica', ['controller' => 'GraficaController']);
+    $routes->resource('imagen',['controller' => 'Imagen']);
+    $routes->post('email', 'EmailController::enviarCorreo');
+    $routes->resource('email', ['controller' => 'EmailController']);
 
     $routes->options('(:any)', static function () {
         // Implement processing for normal non-preflight OPTIONS requests,
