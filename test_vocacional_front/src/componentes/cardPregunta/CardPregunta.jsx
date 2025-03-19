@@ -38,4 +38,5 @@ const CardPregunta = memo(({ pregunta, id_pregunta, id_area, incisos, sumarArea,
         </div>
     );
 });
+
 export default CardPregunta;

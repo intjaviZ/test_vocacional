@@ -9,7 +9,7 @@
 }
 
 .burguer-boton {
-    @apply text-white w-6 h-6 lg:w-9 lg:h-9 2xl:w-16 2xl:h-16;
+    @apply text-white w-6 h-6 sm:hidden;
 }
 .burguer-boton:disabled {
     @apply  cursor-not-allowed opacity-50;

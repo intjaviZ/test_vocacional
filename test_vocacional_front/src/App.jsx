@@ -6,11 +6,12 @@ import Cargando from './componentes/cargando/Cargando'
 import VistasProtegidas from './pages/VistaProtegida'
 import './estilos/forms.css'
 import './estilos/botones.css'
+import Resultado from './pages/Resultado'
 
 // Cargar dinámicamente las páginas
 const FormRegister = lazy(() => import('./pages/FormRegister'))
 const Preguntas = lazy(() => import('./pages/Preguntas'))
-const Resultados = lazy(() => import('./pages/Resultados'))
+const ListaResultados = lazy(() => import('./pages/ListaResultados'))
 const NoEncontrado = lazy(() => import('./pages/NoEncontrado'))
 const ErrorPage = lazy(() => import('./pages/ErrorPage'))
 const FormReingresar = lazy(() => import('./pages/FormReingresar'))
@@ -28,7 +29,8 @@ function App() {
           <Route path='/reingresar' element={<FormReingresar/>}/>
           <Route element={<VistasProtegidas permissions={user.permissions}/>}>
             <Route path='/test' element={<Preguntas/>}/>
-            <Route path='/resultados' element={<Resultados/>}/>
+            <Route path='/resultados' element={<ListaResultados/>}/>
+            <Route path='/resultado' element={<Resultado/>}/>
           </Route>
           <Route path='*' element={<NoEncontrado/>}/>
         </Route>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, Text } from "recharts";
 
 const COLORS = ["#e48a32", "#8537bc", "#541b78", "#b75d0d", "#913d13"];
 
-// Componente personalizado para el tooltip
 const CustomTooltip = ({ active, payload, data }) => {
 
   if (active && payload && payload.length) {
@@ -64,37 +63,6 @@ const CustomLabel = ({ x, y, cx, cy, midAngle, outerRadius, name }) => {
 };
 
 const Grafica = ({ datos }) => {
-
-  // return (
-  //   <PieChart width={600} height={450}>
-  //     <Pie
-  //       data={datos}
-  //       cx="50%"
-  //       cy="50%"
-  //       outerRadius={100}
-  //       fill="#8884d8"
-  //       dataKey="value"
-  //       nameKey="name"
-  //       stroke="none" // Elimina líneas entre segmentos
-  //       label={({ x, y, cx, cy, midAngle, outerRadius, name }) => (
-  //         <CustomLabel
-  //           x={x}
-  //           y={y}
-  //           cx={cx}
-  //           cy={cy}
-  //           midAngle={midAngle}
-  //           outerRadius={outerRadius}
-  //           name={name}
-  //         />
-  //       )}
-  //     >
-  //       {datos.map((entry, index) => (
-  //         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-  //       ))}
-  //     </Pie>
-  //     <Tooltip content={<CustomTooltip data={datos}/>} />
-  //   </PieChart>
-  // );
   return (
     <ResponsiveContainer width="100%" height="100%">
         <PieChart className="focus:outline-none">
@@ -112,8 +80,8 @@ const Grafica = ({ datos }) => {
           dataKey="value"
           nameKey="name"
           stroke="none"
-          startAngle={180} // Cambia el inicio de la gráfica a las 12 en punto
-          endAngle={540} // Termina en 450 grados (360 + 90, un ciclo completo)
+          startAngle={180}
+          endAngle={540}
         >
           {datos.map((entry, index) => (
             <Cell className="focus:outline-none" key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

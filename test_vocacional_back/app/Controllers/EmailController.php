@@ -14,7 +14,7 @@ class EmailController extends ResourceController
     {
         $this->datosGrafica = Services::datosGrafica();
     }
-    private function usuarioValido(int $id): bool
+    private function idValido(int $id): bool
     {
         if (empty($id)) return false;
         if (!is_numeric($id) || (int)$id != $id) return false;
@@ -26,22 +26,27 @@ class EmailController extends ResourceController
     public function enviarCorreo()
     {
         try {
-            $id_user = $this->request->getJSON(true);
-            if (empty($id_user) || !is_array($id_user) || !isset($id_user['id'])) {
-                return $this->failValidationErrors('No pudimos enviar tu información.', 400);
+            $id_respuesta = $this->request->getJSON(true);
+            if (empty($id_respuesta) || !is_array($id_respuesta) || !isset($id_respuesta['id'])) {
+                throw new \Exception("No pudimos enviar tu información.");
             }
 
-            $id = $id_user['id'];
-            if (!$this->usuarioValido($id)) {
+            $id = $id_respuesta['id'];
+            if (!$this->idValido($id)) {
                 throw new \Exception("No pudimos enviar el correo.");
             }
 
             $dataCorreo = $this->datosGrafica->correo($id);
-            $plantilla = $this->prepararPlantilla($dataCorreo);
+            $plantilla = $this->prepararPlantilla($dataCorreo, $id);
 
             // $destinatario = $dataCorreo['email'];
             // $enviado = $this->prepararCorreo($destinatario, $plantilla);
-            // if (!$enviado) throw new \Exception("Error en el envío del correo");
+            // if (!$enviado) {
+            //     throw new \Exception("Error en el envío del correo");
+            // }
+            if (!$this->actualizarStatus(($id))) {
+                throw new \Exception("Ocurrió un problema inesperado");
+            }
 
             // return $this->response->setBody($plantilla)->setHeader('Content-Type', 'text/html');
             return $this->respond([
@@ -53,7 +58,7 @@ class EmailController extends ResourceController
         }
     }
 
-    private function prepararPlantilla(array $datosCorreo): string
+    private function prepararPlantilla(array $datosCorreo, int $id_respuesta): string
     {
         try {
             $id_user = $datosCorreo['id_user'];
@@ -61,7 +66,7 @@ class EmailController extends ResourceController
             $evaluacion = $datosCorreo['evaluacion'];
             $area = $datosCorreo['area'];
             $carreras = $datosCorreo['carreras'];
-            $urlImagen = 'https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/imagen/' . $id_user;
+            $urlImagen = 'http://localhost:8080/testvc/imagen/' . $id_respuesta;
             $urlResultados = 'http://localhost:5173/reingresar';
 
             $plantillaPath = APPPATH . 'Views/plantilla.html';
@@ -112,11 +117,15 @@ class EmailController extends ResourceController
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
-        // Validar la respuesta
         if ($httpCode === 200 || $response === 'OK') {
             return true;
         } else {
             return false;
         }
+    }
+
+    private function actualizarStatus(int $id_respuesta) {
+        $model = new \App\Models\RespuestasModel();
+        return $model->actualizarStatus($id_respuesta);
     }
 }

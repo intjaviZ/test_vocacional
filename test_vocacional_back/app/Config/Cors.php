@@ -40,7 +40,7 @@ class Cors extends BaseConfig
         'http://localhost:4173', 
         'http://192.168.1.195:5173', 
         'http://192.168.1.163:5173',
-        'https://tires-phone-icons-sas.trycloudflare.com'],
+        'https://guam-relocation-bl-upgrading.trycloudflare.com'],
 
         /**
          * Origin regex patterns for the `Access-Control-Allow-Origin` header.

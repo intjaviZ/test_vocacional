@@ -6,30 +6,21 @@ export const ModalError = (titulo="Error", texto="Error desconocido", footer=fal
         title: titulo,
         text: texto,
         footer: `${footer ? '<a href="/registrar">Si no has creado una cuenta da click aquí</a>' : ''}`,
-        target: "#main",
-        customClass: {
-
-        }
+        target: "#main"
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Ejecutas la función que pasaste como parámetro
-        onClick();
-      }
+      if (result.isConfirmed) onClick();
     });
 }
 
-export const ModalExito = (titulo="Todo bien", texto='', onClick=()=>{return}) => {
+export const ModalExito = (titulo="Excelente", texto='', onClick=()=>{return}) => {
     Swal.fire({
       icon: "success",
       title: titulo,
       text: texto,
       target: "#main"
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Ejecutas la función que pasaste como parámetro
-        onClick();
-      }
-    });;
+      if (result.isConfirmed) onClick();
+    });
   };
 
   export const ModalWarning = (titulo="Advertencia", texto='', onClick=()=>{return}) => {
@@ -39,9 +30,6 @@ export const ModalExito = (titulo="Todo bien", texto='', onClick=()=>{return}) =
       text: texto,
       target: "#main"
     }).then((result) => {
-      if (result.isConfirmed) {
-        // Ejecutas la función que pasaste como parámetro
-        onClick();
-      }
-    });;
+      if (result.isConfirmed) onClick();
+    });
   };

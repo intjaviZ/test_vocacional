@@ -33,9 +33,9 @@ class Services extends BaseService
      * }
      */
 
-    public static function databaseConnect(bool $conectado = true) : DataBaseConnect
+    public static function databaseConnect(bool $getShared = true) : DataBaseConnect
     {
-        if ($conectado) {
+        if ($getShared) {
             return static::getSharedInstance('databaseConnect');
         }
         return new DataBaseConnect();
@@ -47,9 +47,9 @@ class Services extends BaseService
         }
         return new DatosGrafica();
     }
-    public static function generarImagen(bool $generar = true) : GenerarImagen
+    public static function generarImagen(bool $getShared = true) : GenerarImagen
     {
-        if ($generar) {
+        if ($getShared) {
             return static::getSharedInstance('generarImagen');
         }
         return new GenerarImagen();

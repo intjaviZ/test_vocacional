@@ -35,10 +35,9 @@ const FormRegister = () => {
             case "nombre_user":
             case "apellido_paterno":
             case "apellido_materno":
-                // Permitimos letras y un solo espacio entre palabras
-                value = value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, ""); // Elimina caracteres inválidos
-                value = value.replace(/\s{2,}/g, " "); // Reemplaza múltiples espacios con solo uno
-                value = value.trimStart(); // Evita espacios al inicio
+                value = value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g, "");
+                value = value.replace(/\s{2,}/g, " ");
+                value = value.trimStart();
                 break;
             case "telefono":
                 const regexNumber = /[^0-9]/g;
@@ -83,11 +82,11 @@ const FormRegister = () => {
 
         if (!response) {
             return ModalError("Error de servidor", "El servidor ha tardado demasiado.")
-        } else if (response.error || !response.ok) {
-            if (Object.keys(response.messages).length > 1) {
+        } 
+        if (response.error) {
+            if (Object.keys(response.messages).length > 1 ) {
                 return ModalError("Datos erroneos", "prueba seguir las sugerencias del navegador para registrarte")
             }
-
             const mensaje = Object.values(response.messages)[0];
             return ModalError("Error en un dato", mensaje)
         }
@@ -129,7 +128,6 @@ const FormRegister = () => {
                             minLength="3"
                             maxLength="16"
                             title="Minimo de 3 caracteres"
-                            pattern="\w{3,16}"
                             onChange={(e) => onChangeInput(e, "apellido_paterno")} />
                     </InputRegister>
                     <InputRegister srcImagen="/person-prueba.webp">

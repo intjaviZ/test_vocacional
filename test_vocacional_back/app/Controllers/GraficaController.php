@@ -15,14 +15,14 @@ class GraficaController extends ResourceController
         $this->datosGrafica = Services::datosGrafica();
     }
 
-    public function show($id_user = null)
+    public function show($id_respuesta = null)
     {
         try {
-            if (empty($id_user)) {
+            if (empty($id_respuesta)) {
                 return $this->failNotFound('no logramos obtener datos que generen una respuesta', 404);
             }
-            $usuario = $this->datosGrafica->usuario($id_user);
-            $datos = $this->datosGrafica->grafica($id_user);
+            $usuario = $this->datosGrafica->usuario($id_respuesta);
+            $datos = $this->datosGrafica->grafica($id_respuesta);
     
             $response = [
                 'usuario' => $usuario,

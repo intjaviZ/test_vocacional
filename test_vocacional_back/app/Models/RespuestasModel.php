@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
-
 use CodeIgniter\Model;
+use Config\Services;
 
 class RespuestasModel extends Model
 {
@@ -17,7 +17,8 @@ class RespuestasModel extends Model
         'resultados',
         'id_area',
         'puntos',
-        'id_evaluacion'
+        'id_evaluacion',
+        'id_status'
     ];
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -58,4 +59,11 @@ class RespuestasModel extends Model
     ];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
+
+    public function actualizarStatus(int $id_respuesta) {
+        $db = Services::databaseConnect()->getConnection();
+        return $db->table('test_respuestas')
+        ->where('id_respuesta', $id_respuesta)
+        ->update(['id_status' => 3]);
+    }
 }

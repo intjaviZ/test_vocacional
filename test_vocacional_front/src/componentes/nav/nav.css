@@ -6,7 +6,7 @@
     @apply w-full h-full flex items-center justify-between px-3 pt-2 pb-4 relative 2xl:text-2xl;
 }
 .menu-pc {
-    @apply hidden lg:flex space-x-4;
+    @apply hidden sm:flex space-x-4 mr-4;
 }
 /* .box-oculto {
     @apply absolute top-full left-0 w-full bg-cobre shadow-lg z-50;

@@ -34,7 +34,7 @@ const Preguntas = () => {
         fetchIncisos().then((data) => {
             if (incisos.length === 0) setIncisos(data);
         });
-    }, []);//pedidos al montar el componente
+    }, []);
 
     const sumarArea = useCallback((area, id_pregunta, valor) => {
 
@@ -94,7 +94,7 @@ const Preguntas = () => {
         return false;
     }
     const enRango = (valoresTest) => {
-        const isWithinRange = (value) => value >= 0 && value <= 32; // Ejemplo de rango permitido (0 a 10)
+        const isWithinRange = (value) => value >= 0 && value <= 32;
         const valoresEnRango = valoresTest.every(isWithinRange);
 
         if (valoresEnRango) return true;

@@ -1,34 +1,42 @@
-import { useContext, useEffect, useState } from "react";
-import { ContextUser } from "../contextos/ContextUser";
-import { pedirDatosGrafica } from "../pedidos/fetchPreguntas";
+import { useEffect, useState } from "react";
 import Grafica from "../componentes/grafica/Grafica";
 import Cargando from "../componentes/cargando/Cargando";
 import { ModalError, ModalExito, ModalWarning } from "../componentes/Modal/Modales";
 import ErrorPage from "./ErrorPage";
-import { enviarEmail } from "../pedidos/fetchRegister";
+import { useLocation } from "react-router-dom";
+import { enviarEmail, pedirDatosGrafica } from "../pedidos/fetchResultados";
 
-const Resultados = () => {
+const Resultado = () => {
+    const location = useLocation();
+    const idGrafica = location.state;
 
-    const { user } = useContext(ContextUser);
     const [evaluacion , setEvaluacion] = useState({
         nombre: "",
         evaluacion: "",
         area: "",
+        status_email: 0
     });
     const [grafica, setGrafica] = useState(null);
     const [error, setError] = useState(false);
+    const [botonEmail, setBotonEmail] = useState(true);
+
+    useEffect(() => { pedirGrafica(idGrafica) },[]);
+
+    useEffect(() => {
+        if (evaluacion.status_email === 3) setBotonEmail(false);
+    },[evaluacion]);
 
     const pedirGrafica = async (id) => {
         const { status, resultados } = await pedirDatosGrafica(id);
-        if (status != 200 || resultados.usuario.id_user !== id) {
+        if (status != 200) {
             ModalError('Error',"No logramos obtener tus resultados");
             setError(true);
         } 
 
         const datos = resultados.datos;
         const usuario = resultados.usuario;
-        const { nombre, evaluacion, area } = usuario;
-        setEvaluacion({ nombre, evaluacion, area });
+        const { nombre, evaluacion, area, status_email } = usuario;
+        setEvaluacion({ nombre, evaluacion, area, status_email });
             
         if (datos.labels.length === datos.data.length) {
             const nuevosDatos = datos.labels.map((label, index) => ({
@@ -39,19 +47,15 @@ const Resultados = () => {
         }
     }
 
-    useEffect(() => {
-        if (user.permissions) {
-            const id_user = parseInt(user.id_user);
-            pedirGrafica(id_user);
-        }
-    },[user]);
-
     const finalizar = async () => {
-        const email = await enviarEmail(user.id_user);
+        setBotonEmail(false);
+        const email = await enviarEmail(idGrafica);
         if (email.enviado) {
             return ModalExito("Listo","Puedes revisar tu bandeja de Correo y ver tus resultados");
         }
-        return ModalWarning("Vaya!!!","No pudimo enviar a tus resultados al correo, pero puedes verlos por aquí");
+        return ModalWarning("Vaya!!!","No pudimo enviar a tus resultados al correo, pero puedes verlos por aquí",() => {
+            setBotonEmail(true);
+        });
     }
 
     return ( !error ?
@@ -73,10 +77,13 @@ const Resultados = () => {
                 </div>
             </div>
             <div className=" w-full flex justify-center items-start pb-6">
-                <button className="boton-primario" onClick={finalizar}>Finalizar</button>
+                {botonEmail && ( <button className="boton-primario"
+                onClick={finalizar} disabled={!botonEmail}>Finalizar</button>
+                )}
             </div>
         </> : <ErrorPage mensaje="Ocurrió un problema y no tenemos resultados para mostrar :("/>
     );
 
 }
-export default Resultados;
+ 
+export default Resultado;

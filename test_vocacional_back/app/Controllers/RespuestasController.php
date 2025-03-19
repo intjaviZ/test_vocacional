@@ -30,6 +30,21 @@ class RespuestasController extends ResourceController
         }
         return $this->respond($respuestasModelJson, 200);
     }
+
+    public function show($id_user = null)
+    {
+        if (!$id_user || !$this->validarIdUser($id_user)) {
+            return $this->failValidationErrors('El usuario no es valido.');
+        }
+        
+        $respuestas = $this->db->table('test_respuestas')->select('id_respuesta')
+        ->where('id_user',$id_user)->get()->getResultArray();
+
+        $id_respuestas =  array_column($respuestas, 'id_respuesta');
+    
+        return $this->respond($id_respuestas,200);
+    }
+
     public function create($id_user = null)
     {
         try {
@@ -123,7 +138,8 @@ class RespuestasController extends ResourceController
     }
 
     private function obtenerAreas() {
-        return $this->db->table('test_areas')->select('id_area')->where('id_status', 1)->get();
+        return $this->db->table('test_areas')->select('id_area')
+        ->where('id_status', 1)->get();
     }
 
     private function mayorAreaPuntaje(array $respuestas): array
@@ -173,8 +189,9 @@ class RespuestasController extends ResourceController
         $preguntasArea = $this->db->table('test_preguntas')
         ->where('id_area', $id_area)->where('id_status', 1)->countAllResults();
 
-        $maxInciso = $this->db->table('test_incisos')->select('valor_inciso')->where('id_status', 1)
-        ->orderBy('valor_inciso', 'DESC')->limit(1)->get()->getRow();
+        $maxInciso = $this->db->table('test_incisos')->select('valor_inciso')
+        ->where('id_status', 1)->orderBy('valor_inciso', 'DESC')->limit(1)
+        ->get()->getRow();
 
         $maxPuntaje = $preguntasArea * $maxInciso->valor_inciso;
         $porcentaje = ($puntos * 100) / $maxPuntaje;
@@ -193,6 +210,4 @@ class RespuestasController extends ResourceController
             throw new \InvalidArgumentException("El porcentaje debe ser un número.");
         }
     }
-
-
 }

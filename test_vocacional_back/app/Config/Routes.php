@@ -10,22 +10,21 @@ $routes->group('testvc', ['filter' => 'cors'], static function (RouteCollection 
     
     $routes->get('/', 'Home::index');
 
-    $routes->resource('estados', ['controller' => 'EstadosController']);
-    $routes->resource('generos', ['controller' => 'GenerosController']);
+    $routes->resource('estados', ['controller' => 'EstadosController']);//caché
+    $routes->resource('generos', ['controller' => 'GenerosController']);//caché
     $routes->resource('municipios', ['controller' => 'MunicipiosController']);
     $routes->resource('preguntas', ['controller' => 'PreguntasController']);
-    $routes->resource('incisos', ['controller' => 'IncisosController']);
+    $routes->resource('incisos', ['controller' => 'IncisosController']);//caché
 
-    $routes->resource('usuario', ['controller' => 'UserController']);
+    $routes->resource('usuario', ['controller' => 'UserController']);//caché index
     $routes->post('pedirUsuario', 'UserController::obtenerUsuario');
 
     $routes->resource('respuestas', ['controller' => 'RespuestasController']);
     $routes->post('subirResultados/(:num)', 'RespuestasController::create/$1');
-    
+
     $routes->resource('grafica', ['controller' => 'GraficaController']);
     $routes->resource('imagen',['controller' => 'Imagen']);
     $routes->post('email', 'EmailController::enviarCorreo');
-    $routes->resource('email', ['controller' => 'EmailController']);
 
     $routes->options('(:any)', static function () {
         // Implement processing for normal non-preflight OPTIONS requests,

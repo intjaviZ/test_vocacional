@@ -67,7 +67,7 @@ const FormReingresar = () => {
             () => { navegar('/test') });
             return;
         }
-        navegar('/resultados');
+        navegar('/resultados', { state: user.id_user });
         
     },[userObtenido, clickStart]);
 

@@ -1,26 +1,26 @@
 import { ModalError, ModalWarning } from "../componentes/Modal/Modales";
 
 export const pedirEstados = async () => {
-    const response = await fetch("https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/estados");
+    const response = await fetch("http://localhost:8080/testvc/estados");
     const estados = await response.json();
     return estados;
 };
 
 export const pedirCiudad = async (id_ciudad) => {
-    const response = await fetch(`https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/municipios/${id_ciudad}`);
+    const response = await fetch(`http://localhost:8080/testvc/municipios/${id_ciudad}`);
     const ciudades = await response.json();
     return ciudades;
 };
 
 export const pedirGenero = async () => {
-    const response = await fetch(`https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/generos`);
+    const response = await fetch(`http://localhost:8080/testvc/generos`);
     const generos = await response.json();
     return generos;
 };
 
 export const registrarUsuario = async (dataUsuario) => {
     try {
-        const pedido = await fetch('https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/usuario', {
+        const pedido = await fetch('http://localhost:8080/testvc/usuario', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export const obtenerUsuario = async (email) => {
         if (!email.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.email)){ 
             return { "invalid": "Por favor, ingresa un email valido"  };
         }
-        const pedido = await fetch('https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/pedirUsuario', {
+        const pedido = await fetch('http://localhost:8080/testvc/pedirUsuario', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json"
@@ -56,19 +56,3 @@ export const obtenerUsuario = async (email) => {
     }
 }
 
-export const enviarEmail = async (id) => {
-    try {
-        const pedido = await fetch(`https://restricted-agreement-personally-shelf.trycloudflare.com/testvc/email`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ "id": id })
-        });
-
-        const response = await pedido.json();
-        return response;
-    } catch (error) {
-        ModalWarning("Vaya!!!","No pudimo enviar a tus resultados al correo, pero puedes verlos por aquí");
-    }
-}
