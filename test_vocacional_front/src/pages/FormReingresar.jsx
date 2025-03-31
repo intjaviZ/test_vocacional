@@ -17,9 +17,9 @@ const FormReingresar = () => {
 
     const getUser = async (user_email) => {
         const response = await obtenerUsuario(user_email);
-        if (response.hasOwnProperty('invalid')) {
+        if ('invalid' in response) {
             ModalError("Error", response.invalid, true);
-        } else if (response.hasOwnProperty('id_user') && !response.hasOwnProperty('error')) {
+        } else if ('id_user' in response && !('error' in response)) {
             setUser((prevUser) => ({
                 ...prevUser,
                 ...response,
@@ -44,17 +44,12 @@ const FormReingresar = () => {
         e.preventDefault();
         const emailValido = await getUser(emailState);
         if (!emailValido) return;
-        if (clickStart) setClickStart(false); //caso en que el usuario no vaya a test después del click a startTest y quiera ir a resultados
+        if (clickStart) setClickStart(false);
+        //caso en que el usuario no vaya a test después del click a startTest y quiera ir a resultados
         //la lógica de redirección la maneja el efecto secundario
     }
 
-    const sinResultados = () => {
-        const completado = parseInt(user.test_completado);
-        if (completado != 3) return true;
-
-        return false;
-    }
-
+    const sinResultados = () => parseInt(user.test_completado) !== 3;
 
     useEffect(() => {
         if (clickStart) return;
@@ -67,13 +62,13 @@ const FormReingresar = () => {
             () => { navegar('/test') });
             return;
         }
-        navegar('/resultados', { state: user.id_user });
+        navegar('/resultados', { state: { id_user: user.id_user } });
         
     },[userObtenido, clickStart]);
 
     return !user.loading ? (
         <div className="box-ingresar">
-            <form onSubmit={startTest} id="form-reingresar" className="form-reingresar" autoComplete="off">
+            <form onSubmit={startTest} className="form-reingresar" autoComplete="off">
                 <div className="box-imagen" id="box-re-imagen">
                     <img src="/person-prueba.webp" alt="user image" />
                 </div>
@@ -92,7 +87,7 @@ const FormReingresar = () => {
             </form>
             <div className="box-botones">
                 <button className="boton-primario" onClick={verResultados}>Resultados anteriores</button>
-                <button className="boton-primario" form="form-reingresar">Iniciar test</button>
+                <button className="boton-primario" onClick={startTest}>Iniciar test</button>
             </div>
         </div>
     ) : (<Cargando />);

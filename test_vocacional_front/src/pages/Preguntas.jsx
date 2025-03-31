@@ -132,7 +132,11 @@ const Preguntas = () => {
             return ModalError("Error en un dato", mensaje);
         }
         if (response.exito) {
-            return ModalExito("Felicidades", "Listo para ver tus resultados???", () => navegar('/resultados'));
+            respuestas.current = Object.keys(respuestas.current).forEach(key => {
+                respuestas.current[key] = 0;
+            });
+            return ModalExito("Felicidades", "Listo para ver tus resultados???",
+                () => navegar('/resultado', { state: response.respuesta }));
         }
     }
 

@@ -38,7 +38,7 @@ class EmailController extends ResourceController
 
             $dataCorreo = $this->datosGrafica->correo($id);
             $plantilla = $this->prepararPlantilla($dataCorreo, $id);
-
+            // comentado para evitar sobrecarga del servicio en pruebas
             // $destinatario = $dataCorreo['email'];
             // $enviado = $this->prepararCorreo($destinatario, $plantilla);
             // if (!$enviado) {
@@ -48,11 +48,9 @@ class EmailController extends ResourceController
                 throw new \Exception("Ocurrió un problema inesperado");
             }
 
-            // return $this->response->setBody($plantilla)->setHeader('Content-Type', 'text/html');
             return $this->respond([
                 "enviado" => true
-            ],200);
-
+            ], 200);
         } catch (\Throwable $th) {
             return $this->fail($th->getMessage(), 400);
         }
@@ -61,13 +59,12 @@ class EmailController extends ResourceController
     private function prepararPlantilla(array $datosCorreo, int $id_respuesta): string
     {
         try {
-            $id_user = $datosCorreo['id_user'];
             $nombre = $datosCorreo['nombre'];
             $evaluacion = $datosCorreo['evaluacion'];
             $area = $datosCorreo['area'];
             $carreras = $datosCorreo['carreras'];
-            $urlImagen = 'http://localhost:8080/testvc/imagen/' . $id_respuesta;
-            $urlResultados = 'http://localhost:5173/reingresar';
+            $urlImagen = 'https://kenya-rhythm-designs-handled.trycloudflare.com/testvc/imagen/' . $id_respuesta;
+            $urlResultados = 'https://helena-ceiling-improvements-expert.trycloudflare.com/reingresar';
 
             $plantillaPath = APPPATH . 'Views/plantilla.html';
             if (!file_exists($plantillaPath)) {
@@ -78,11 +75,13 @@ class EmailController extends ResourceController
 
             if (empty($carreras)) {
                 $listaCarreras = '<li>No hay carreras disponibles.</li>';
+            } else {
+                $listaCarreras = '';
+                foreach ($carreras as $carrera) {
+                    $listaCarreras .= '<li>' . htmlspecialchars($carrera) . '</li>';
+                }
             }
-            $listaCarreras = '';
-            foreach ($carreras as $carrera) {
-                $listaCarreras .= '<li>' . htmlspecialchars($carrera) . '</li>';
-            }
+
 
             $htmlContent = str_replace('{{nombre}}', $nombre, $htmlContent);
             $htmlContent = str_replace('{{area}}', $area, $htmlContent);
@@ -124,8 +123,13 @@ class EmailController extends ResourceController
         }
     }
 
-    private function actualizarStatus(int $id_respuesta) {
-        $model = new \App\Models\RespuestasModel();
-        return $model->actualizarStatus($id_respuesta);
+    private function actualizarStatus(int $id_respuesta)
+    {
+        try {
+            $model = new \App\Models\RespuestasModel();
+            return $model->actualizarStatus($id_respuesta);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }

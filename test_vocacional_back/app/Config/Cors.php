@@ -35,12 +35,11 @@ class Cors extends BaseConfig
          *   - ['https://www.example.com']
          */
         'allowedOrigins' => [
-        'http://localhost:5173',
-        'http://localhost:5174', 
-        'http://localhost:4173', 
+        'http://localhost:5173', 
+        'http://localhost:4173',
         'http://192.168.1.195:5173', 
-        'http://192.168.1.163:5173',
-        'https://guam-relocation-bl-upgrading.trycloudflare.com'],
+        'http://192.168.1.163:5173'
+        ],
 
         /**
          * Origin regex patterns for the `Access-Control-Allow-Origin` header.

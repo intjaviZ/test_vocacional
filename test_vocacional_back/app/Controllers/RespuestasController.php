@@ -8,6 +8,7 @@ use Config\Services;
 
 class RespuestasController extends ResourceController
 {
+    protected $format = 'json';
     protected DataBaseConnect $databaseConnect;
     protected $db;
 
@@ -15,10 +16,8 @@ class RespuestasController extends ResourceController
     {
         $this->databaseConnect = Services::databaseConnect();
         $this->db = $this->databaseConnect->getConnection();
+        $this->model = new \App\Models\RespuestasModel();
     }
-
-    protected $modelName = 'App\Models\RespuestasModel';
-    protected $format    = 'json';
 
     public function index()
     {
@@ -34,7 +33,7 @@ class RespuestasController extends ResourceController
     public function show($id_user = null)
     {
         if (!$id_user || !$this->validarIdUser($id_user)) {
-            return $this->failValidationErrors('El usuario no es valido.');
+            return $this->failNotFound('Usuario no encontrado.');
         }
         
         $respuestas = $this->db->table('test_respuestas')->select('id_respuesta')
@@ -69,7 +68,8 @@ class RespuestasController extends ResourceController
                 'id_evaluacion' => $resultados['id_evaluacion'],
             ];
 
-            if (!$this->model->insert($dataInsert)) {
+            $id_insertado = $this->model->insert($dataInsert);
+            if (!$id_insertado) {
                 $errors = $this->model->errors();
                 return $this->failValidationErrors($errors, 400, 'error al registrar tu respuesta');
             }
@@ -79,7 +79,10 @@ class RespuestasController extends ResourceController
                 throw new \RuntimeException("No logramos guardar tu resultado.");
             }
 
-            $resultadosListos =  [ "exito" => true ];
+            $resultadosListos =  [ 
+                "exito" => true,
+                "respuesta" => $id_insertado
+            ];
             return $this->respond($resultadosListos, 201);
 
         } catch (\RuntimeException $e) {
@@ -131,7 +134,7 @@ class RespuestasController extends ResourceController
         if ($row->test_completado == 3) {
             return true;
         }
-        
+
         $this->db->table('test_user')->where('id_user', $id_user)
         ->where('id_status', 1)->update(['test_completado' => 3]);
         return $this->db->affectedRows() > 0;
@@ -145,20 +148,16 @@ class RespuestasController extends ResourceController
     private function mayorAreaPuntaje(array $respuestas): array
     {
         try {
-            $claveMayorValor = array_key_first($respuestas);
-            $mayorValor = $respuestas[$claveMayorValor];
-            foreach ($respuestas as $clave => $valor) {
-                if ($valor > $mayorValor) {
-                    $mayorValor = $valor;
-                    $claveMayorValor = $clave;
-                }
+            if (empty($respuestas)) {
+                throw new \RuntimeException("No hay respuestas para evaluar.");
             }
 
-            $response = [
-                "id_area" => $claveMayorValor,
-                "puntos" => $mayorValor
+            $id_area = array_keys($respuestas, max($respuestas))[0];
+
+            return [
+                "id_area" => $id_area,
+                "puntos" => $respuestas[$id_area]
             ];
-            return $response;
         } catch (\Throwable $e) {
             throw new \RuntimeException( $e->getMessage(), 500, $e);
         }
@@ -186,14 +185,13 @@ class RespuestasController extends ResourceController
 
     private function evaluar(int $puntos, int $id_area): int
     {
-        $preguntasArea = $this->db->table('test_preguntas')
-        ->where('id_area', $id_area)->where('id_status', 1)->countAllResults();
+        $query = $this->db->query(" SELECT 
+        (SELECT COUNT(*) FROM test_preguntas WHERE id_area = ? AND id_status = 1) AS total_preguntas,
+        (SELECT MAX(valor_inciso) FROM test_incisos WHERE id_status = 1) AS max_valor_inciso
+        ", [$id_area]);
 
-        $maxInciso = $this->db->table('test_incisos')->select('valor_inciso')
-        ->where('id_status', 1)->orderBy('valor_inciso', 'DESC')->limit(1)
-        ->get()->getRow();
-
-        $maxPuntaje = $preguntasArea * $maxInciso->valor_inciso;
+        $result = $query->getRow();
+        $maxPuntaje = $result->total_preguntas * $result->max_valor_inciso;
         $porcentaje = ($puntos * 100) / $maxPuntaje;
         $porcentaje = number_format($porcentaje, 3);
 

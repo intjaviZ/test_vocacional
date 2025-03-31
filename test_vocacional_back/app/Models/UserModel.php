@@ -27,6 +27,7 @@ class UserModel extends Model
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
+    // validationRules no añadido pero si lo tengo
     protected $validationRules      = [
         'nombre_user'      => 'required|string|min_length[3]|max_length[25]',
         'apellido_paterno' => 'required|string|min_length[3]|max_length[25]',
@@ -94,6 +95,6 @@ class UserModel extends Model
      */
     public function exists(?int $idUser): bool
     {
-        return $this->where('id_user', $idUser)->where('id_status', 1)->countAllResults() > 0;
+        return $this->where('id_user', $idUser)->where('id_status', 1)->first() !== null;
     }
 }

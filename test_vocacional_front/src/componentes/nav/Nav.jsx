@@ -15,7 +15,6 @@ const Navbar = () => {
         <button
           aria-expanded={isOpen}
           className="burguer-boton"
-          disabled={user.permissions}
           onClick={() => setIsOpen(!isOpen)}
         >
           <svg
@@ -37,14 +36,19 @@ const Navbar = () => {
         <div className="menu-pc">
           <Link className="links" to={'/registrar'}>Registrarme</Link>
           <Link className="links" to={'/reingresar'}>Reingresar</Link>
+          {user.test_completado == 3 && <Link className="links"
+            state={{ id_user: user.id_user }} to='/resultados'>
+            Resultados</Link>}
         </div>
         {/* Menú desplegable */}
-        <div className={`box-oculto ${isOpen ? 'box-visible' : 'box-salida'
-          }`}>
-          {!user.permissions && <div className="box-links">
+        <div className={`box-oculto ${isOpen ? 'box-visible' : 'box-salida'}`}>
+          <div className="box-links">
             <Link className="links link-mv" onClick={() => setIsOpen(false)} to={'/registrar'}>Registrarme</Link>
             <Link className="links link-mv" onClick={() => setIsOpen(false)} to={'/reingresar'}>Reingresar</Link>
-          </div>}
+            {user.test_completado == 3 && <Link className="links link-mv" 
+            onClick={() => setIsOpen(false)} state={{ id_user: user.id_user }} to='/resultados'>
+              Resultados</Link>}
+          </div>
         </div>
       </nav>
     </header>

@@ -6,11 +6,18 @@ export const ContextUser = createContext();
 export const ContextUserProvider = ({ children }) => {
     let [user, setUser] = useState({ "loading": true });
 
-    const fetchModelUser = async () => { return await pedirUserModelJson() }
-    useEffect(() => { fetchModelUser().then((data) => setUser(data)) },[]);
+    const fetchModelUser = async () => {
+        const modelUser = await pedirUserModelJson();
+        setUser(modelUser);
+        return modelUser;
+    }
+    
+    useEffect(() => { fetchModelUser() },[]);
+    const reset = async () => { return await fetchModelUser() }
+
     return (
-        <ContextUser.Provider value={{user, setUser}}>
+        <ContextUser.Provider value={{user, setUser, reset}}>
             {children}
         </ContextUser.Provider>
-     );
+    );
 }

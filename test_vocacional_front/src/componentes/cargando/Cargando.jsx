@@ -7,7 +7,7 @@ const Cargando = () => {
         const timeOut = setTimeout(() => {
             ModalError("Oooops!","Intenta más tarde", true);
             setSinDatos(true);
-        }, 5000);
+        }, 15000);
 
         return () => clearTimeout(timeOut);
     },[]);

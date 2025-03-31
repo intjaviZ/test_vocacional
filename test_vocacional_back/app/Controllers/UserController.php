@@ -52,10 +52,19 @@ class UserController extends ResourceController
     public function obtenerUsuario()
     {
         $requestData = $this->request->getJSON();
-        if (!isset($requestData->email)) return $this->failValidationErrors('Ingresa un email');
+        if (!isset($requestData->email)) {
+            return $this->failValidationErrors('Ingresa un email');
+        }
 
-        $user = $this->model->where('email', $requestData->email)->first();
-        if (!$user) return $this->failNotFound('No encontramos un usuario con este email.');
+        $email = esc($requestData->email); // Protección contra inyección SQL
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->failValidationErrors('Email inválido.');
+        }
+
+        $user = $this->model->where('email', $email)->first();
+        if (!$user) {
+            return $this->failNotFound('No encontramos un usuario con este email.');
+        }
 
         $filteredUser = UserTransformer::datosUsuario($this->model,$user);
 

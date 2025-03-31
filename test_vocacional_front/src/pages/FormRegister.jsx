@@ -8,11 +8,12 @@ import Cargando from "../componentes/cargando/Cargando";
 import { ModalError, ModalExito } from "../componentes/Modal/Modales";
 
 const FormRegister = () => {
-    const { user, setUser } = useContext(ContextUser);
+    const { user, setUser, reset } = useContext(ContextUser);
 
     const [estados, setEstados] = useState([]);
     const [ciudades, setCiudades] = useState([]);
     const [generos, setGeneros] = useState([]);
+    const [cargando, setCargando] = useState(true)
 
     const navegar = useNavigate();
 
@@ -27,6 +28,22 @@ const FormRegister = () => {
         fetchEstados().then((data) => setEstados(data));
         fetchGenero().then((data) => setGeneros(data));
     }, []);
+
+    useEffect(() => {
+        const resetUser = async () => {
+            await reset();
+            setCargando(false);
+        };
+
+        if (user.permissions) {
+            resetUser();
+        } else if(!('loading' in user)) {
+            setCargando(false);
+        }
+    }, [user]);
+
+
+
 
     const onChangeInput = (event, prop) => {
         let value = event.target.value;
@@ -97,7 +114,7 @@ const FormRegister = () => {
         }
     }
 
-    return !user.loading ? (
+    return !('loading' in user) && !cargando ? (
         <div className="box-ingresar">
             <form onSubmit={startTest} id="form-register" className="form-ingresar" autoComplete="off">
                 <div className="box-imagen">
