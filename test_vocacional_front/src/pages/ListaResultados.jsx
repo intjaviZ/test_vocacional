@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import { listaResultados } from "../pedidos/fetchResultados";
 import { useLocation, useNavigate } from "react-router-dom";
+import Cargando from "../componentes/cargando/Cargando";
+import { FaChartPie  } from 'react-icons/fa';
+
+
+
 
 const ElementList = ({ id, text }) => {
     const navegar = useNavigate();
     const mostrarResultado = () => { navegar('/resultado', { state: id }) }
 
     return (
-        <button onClick={mostrarResultado} className="text-secondary text-sm sm:text-base xl:text-lg 2xl:text-2xl
-    border 2xl:border-2 border-cobre rounded-3xl m-2 2xl:m-6 ml-0 pl-4 xl:pl-8 py-1 2xl:py-3 min-w-28 w-5/6 flex items-center box-border 
-    md:cursor-pointer transition duration-200 ease-in
-    md:hover:text-primary md:hover:bg-secondary md:hover:border-transparent">
+        <button onClick={mostrarResultado} className="bg-primary text-secondary font-bold min-h-8 h-auto w-64
+            mb-2 lg:mb-0 ml-0
+            py-7 2xl:py-12 px-5 rounded-r-[128px] lg:rounded-l-[128px] 2xl:rounded-r-[256px] 2xl:rounded-l-[256px]
+            overflow-hidden shadow-[4px_0_6px_rgba(0,0,0,0.4)] flex items-center justify-center gap-3
+            ">
+            <FaChartPie />
             {text}
         </button>
     );
@@ -30,18 +37,17 @@ const ListaResultados = () => {
     }, []);
 
     return (
-        <div className=" w-full h-full pt-20 2xl:pt-40">
-            <div className='bg-primary min-h-8 h-auto  min-w-72 w-card-mv max-w-cp
-            mb-4 md:mb-7 lg:mb-12 ml-0 py-10  pl-left-cp pr-9 rounded-r-full overflow-hidden 
-            shadow-[4px_0_6px_rgba(0,0,0,0.4)]
-            md:w-card-tb lg:w-card-es md:pl-left-cp-es 2xl:h-1/2 2xl:'>
-                <h1 className="text-xl sm:text-3xl 2xl:text-5xl font-bold mb-6 2xl:mb-12 text-secondary">Lista resultados</h1>
+        resultadosList.length != 0 ?
+        <div className=" w-full h-full py-10 2xl:py-40">
+            <h1 className="text-xl sm:text-4xl 2xl:text-6xl font-bold text-primary text-center">RESULTADOS ANTERIORES</h1>
+            <div className="mt-16 2xl:pt-32 flex flex-col flex-wrap items-start justify-center gap-4 2xl:gap-20
+            lg:flex-row lg:items-center lg:p-5 lg:mb-10 lg:gap-8 2xl:px-44">
                 {resultadosList.map((resultado, index) => (
-                    <ElementList key={resultado} id={resultado}
-                        text={"Resultado " + parseInt(index + 1)} />
+                <ElementList key={resultado} id={resultado}
+                    text={"Resultado " + parseInt(index + 1)} />
                 ))}
             </div>
-        </div>
+        </div> : <Cargando/>
     );
 }
 export default ListaResultados;

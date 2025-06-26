@@ -56,7 +56,7 @@ class UserController extends ResourceController
             return $this->failValidationErrors('Ingresa un email');
         }
 
-        $email = esc($requestData->email); // Protección contra inyección SQL
+        $email = esc($requestData->email);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this->failValidationErrors('Email inválido.');
         }

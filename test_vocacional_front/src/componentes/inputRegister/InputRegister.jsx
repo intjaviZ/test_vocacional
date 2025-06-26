@@ -1,10 +1,10 @@
 import '../inputRegister/InputRegister.css'
 
-const InputRegister = ({ srcImagen, children }) => {
-    return ( 
+const InputRegister = ({ icon, children }) => {
+    return (
         <div className='box'>
             <div className='box-image'>
-                <img className='image' src={srcImagen} alt="" />
+                {icon}
             </div>
             {children}
         </div>

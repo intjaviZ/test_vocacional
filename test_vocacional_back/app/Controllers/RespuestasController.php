@@ -100,8 +100,10 @@ class RespuestasController extends ResourceController
         }
     }    
 
-    private function validarIdUser(int $id_user): bool
+    private function validarIdUser($id_user): bool
     {
+        if (!ctype_digit($id_user)) return false;
+        
         $modelUser = new \App\Models\UserModel();
         return $modelUser->exists($id_user);
     }

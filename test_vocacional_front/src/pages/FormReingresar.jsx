@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
 import Cargando from "../componentes/cargando/Cargando";
 import { ModalError, ModalExito, ModalWarning } from "../componentes/Modal/Modales";
+import { FaUserCircle } from "react-icons/fa";
+import { MdOutlineAlternateEmail } from "react-icons/md";
 
 const FormReingresar = () => {
 
@@ -70,9 +72,9 @@ const FormReingresar = () => {
         <div className="box-ingresar">
             <form onSubmit={startTest} className="form-reingresar" autoComplete="off">
                 <div className="box-imagen" id="box-re-imagen">
-                    <img src="/person-prueba.webp" alt="user image" />
+                    <FaUserCircle className="h-full w-full text-secondary"/>
                 </div>
-                <InputRegister srcImagen="/person-prueba.webp">
+                <InputRegister icon={<MdOutlineAlternateEmail className="h-full text-secondary"/>}>
                     <input
                         required
                         id="input-reingresar"

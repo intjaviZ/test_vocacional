@@ -44,9 +44,9 @@ class EmailController extends ResourceController
             // if (!$enviado) {
             //     throw new \Exception("Error en el envío del correo");
             // }
-            if (!$this->actualizarStatus(($id))) {
-                throw new \Exception("Ocurrió un problema inesperado");
-            }
+            // if (!$this->actualizarStatus(($id))) {
+            //     throw new \Exception("Ocurrió un problema inesperado");
+            // }
 
             return $this->respond([
                 "enviado" => true
@@ -63,7 +63,7 @@ class EmailController extends ResourceController
             $evaluacion = $datosCorreo['evaluacion'];
             $area = $datosCorreo['area'];
             $carreras = $datosCorreo['carreras'];
-            $urlImagen = 'https://kenya-rhythm-designs-handled.trycloudflare.com/testvc/imagen/' . $id_respuesta;
+            $urlImagen = 'https://defects-smallest-concentrations-moore.trycloudflare.com/testvc/imagen/' . $id_respuesta;
             $urlResultados = 'https://helena-ceiling-improvements-expert.trycloudflare.com/reingresar';
 
             $plantillaPath = APPPATH . 'Views/plantilla.html';

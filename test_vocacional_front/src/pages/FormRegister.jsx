@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { ContextUser } from "../contextos/ContextUser";
 import Cargando from "../componentes/cargando/Cargando";
 import { ModalError, ModalExito } from "../componentes/Modal/Modales";
+import { FaCity, FaMapMarkerAlt, FaPhoneAlt, FaUser, FaUserCircle, FaUserTag, FaVenusMars } from 'react-icons/fa';
+import { MdEmail, MdOutlineAlternateEmail } from "react-icons/md";
 
 const FormRegister = () => {
     const { user, setUser, reset } = useContext(ContextUser);
@@ -118,10 +120,10 @@ const FormRegister = () => {
         <div className="box-ingresar">
             <form onSubmit={startTest} id="form-register" className="form-ingresar" autoComplete="off">
                 <div className="box-imagen">
-                    <img src="/person-prueba.webp" alt="user image" />
+                    <FaUserCircle className="h-full w-full text-secondary"/>
                 </div>
                 <div className="box-input">
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaUser className="image text-secondary"/>}>
                         <input
                             required
                             id="input-nombre"
@@ -134,7 +136,7 @@ const FormRegister = () => {
                             title="Minimo de 3 caracteres"
                             onChange={(e) => onChangeInput(e, "nombre_user")} />
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaUser className="image text-secondary"/>}>
                         <input
                             required
                             id="input-aPaterno"
@@ -147,7 +149,7 @@ const FormRegister = () => {
                             title="Minimo de 3 caracteres"
                             onChange={(e) => onChangeInput(e, "apellido_paterno")} />
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaUser className="image text-secondary"/>}>
                         <input
                             required
                             id="input-aMaterno"
@@ -161,7 +163,7 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e, "apellido_materno")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<MdOutlineAlternateEmail className="image text-secondary"/>}>
                         <input
                             required
                             id="input-email"
@@ -173,7 +175,7 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e, "email")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaPhoneAlt className="image text-secondary"/>}>
                         <input
                             required
                             id="input-tel"
@@ -186,7 +188,7 @@ const FormRegister = () => {
                             onChange={(e) => onChangeInput(e, "telefono")}
                         />
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaMapMarkerAlt className="image text-secondary"/> }>
                         <select required name="estadosOrigen" className='input-register select' id="estadosOrigen" title="campo requerido" value={id_estado} onChange={(e) => onChangeInput(e, "id_estado")}>
                             <option value={0}>Selecciona un estado</option>
                             {estados.map((estado) => (
@@ -194,7 +196,7 @@ const FormRegister = () => {
                             ))}
                         </select>
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaCity className="image text-secondary"/>}>
                         <select required name="ciudadOrigen" className='input-register select' id="ciudadOrigen" title="campo requerido" value={id_ciudad} onChange={(e) => onChangeInput(e, "id_ciudad")}>
                             <option value={0}>Selecciona una ciudad</option>
                             {ciudades.map((ciudad) => (
@@ -202,7 +204,7 @@ const FormRegister = () => {
                             ))}
                         </select>
                     </InputRegister>
-                    <InputRegister srcImagen="/person-prueba.webp">
+                    <InputRegister icon={<FaVenusMars className="image text-secondary"/>}>
                         <select required name="genero" className='input-register select' id="genero" title="campo requerido" value={id_genero} onChange={(e) => onChangeInput(e, "id_genero")}>
                             <option value={0}>Selecciona un genero</option>
                             {generos.map((genero) => (

@@ -10,7 +10,10 @@ const Navbar = () => {
     <header className="nav">
       <nav className="nav-container">
         <a href="https://universidaddelsur.edu.mx/" target="blank" rel="noopener noreferrer">
-          <div className="text-xl 2xl:text-3xl font-bold">Logo</div>
+          <div className="text-xl 2xl:text-3xl font-bold">
+            UNI
+            
+          </div>
         </a>
         <button
           aria-expanded={isOpen}

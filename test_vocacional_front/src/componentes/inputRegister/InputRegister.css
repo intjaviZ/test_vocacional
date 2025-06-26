@@ -3,16 +3,16 @@
     flex items-center justify-start;
 }
 .box-image {
-    @apply  min-h-5 h-9 lg:h-12 2xl:h-16 min-w-5 w-9 lg:w-12 2xl:w-16
-    bg-primary rounded-full flex items-center justify-center z-10;
+    @apply  min-h-5 h-8 lg:h-11 2xl:h-[60px] min-w-5 w-9 lg:w-12 2xl:w-16 p-[2px]
+    bg-primary rounded-full border border-secondary flex items-center justify-center z-10;
 }
 .image {
-    @apply h-5/6 w-5/6 rounded-full;
+    @apply h-full m-0 p-0;
 }
 
 .input-register {
     @apply bg-secondary min-h-5 h-8 lg:h-11 2xl:h-14 max-h-16 min-w-20 w-full max-w-full 
-    rounded-e-full -ml-3 pl-4 lg:-ml-4 lg:pl-5 pr-1 lg:pr-2 2xl:-ml-6 2xl:pl-8
+    rounded-e-full -ml-4 pl-5 lg:-ml-5 lg:pl-6 pr-1 lg:pr-2 2xl:-ml-7 2xl:pl-9
     text-primary text-sm md:text-base 2xl:text-2xl truncate appearance-none flex-grow 
     focus:outline-none placeholder:text-primary hover:opacity-80 transition duration-100 ease-out;
 }
